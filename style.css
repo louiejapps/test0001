@@ -89,7 +89,7 @@ input[type="button"] {
     max-width: 600px;
     color: #6d1c19;
     margin: 0 auto;
-    background-color: #ffdfdf;
+    background-color: #fff6f6;
     padding: 10px;
     height: auto;
     border-bottom: solid 5px #de3c35;
@@ -1218,4 +1218,26 @@ body {
     vertical-align: middle;
     font-size: 24px;
   }
-  
+
+  Certainly! You can use the following CSS code to set a consistent color for placeholder text across different browsers. This example sets the placeholder text color to white:
+
+css
+
+/* Set consistent placeholder text color */
+::placeholder {
+  color: white;
+}
+
+
+::-webkit-input-placeholder {  /* Chrome/Opera/Safari */
+    color: #ddd;
+  }
+  ::-moz-placeholder {  /* Firefox 19+ */
+    color: #ddd;
+  }
+  :-moz-placeholder { /* Firefox 18- */
+    color: #ddd;
+  }
+  :-ms-input-placeholder {  /* Edge/IE 10+ */
+    color: #ddd;
+  }
