@@ -29,6 +29,7 @@ var database = firebase.database();
 var urltext = "";
 var posttext = "";
 var selectedText = "";
+var rnum = "";
 
 localStorage.setItem("data", internetTime);
 sessionStorage.setItem("link", "?");
@@ -39,11 +40,14 @@ const headerImage = document.querySelector("#header-image");
 const loading = document.querySelector("#loading-page");
 loading.style.display = "block";
 headerImage.src = imageHeader;
-previewImage.src = imageURL;
+//previewImage.src = imageURL;
 
 var childNum = 0;
 document.title = "Liszt | " + user;
 loadDatabase(items, "");
+
+let reactArr = ["loves", "likes", "wows", "hahas", "frowns", "dislikes"];
+
 
 database.ref('quotes').once('value')
 	.then((snapshot) => {
@@ -59,7 +63,6 @@ let more_toggle = false;
 function resetPage() {
 	location.reload();
 	window.location.href = "#top";
-
 	postFrom.reset();
 }
 
@@ -87,8 +90,7 @@ IIIIIIIIIINNNNNNNN         NNNNNNNPPPPPPPPPP                UUUUUUUUU           
 showFormButton.addEventListener('click', function () {
 	sessionStorage.setItem("link", "?");
 	sessionStorage.setItem("base64", "");
-	let rnum = randomNum(0, (gradients.length - 1));
-	//sessionStorage.removeItem("tbn");
+	rnum = "";
 	var counter = false;
 
 	upflag = false;
@@ -98,123 +100,157 @@ showFormButton.addEventListener('click', function () {
 	let myAuthor = "<big><b style='color:#ed4c2b;'>" + "CREATE POST" + "</b></big>";
 
 
-	let inputtf = "<div id='thumbnails'></div>";
+	let inputtf = "<><div id='thumbnails'></div>";
 	//let imgButton = "<input type='file' id='img-button'>";
 	let imgButton = "<input type='file' id='img-button' onchange='handleImage()' accept='image/*'>";
-	let vButton = "<textarea id='caption' name='caption' maxlength='320' placeholder='Write something...'></textarea> <button class='view-button' id='v-button'>+ ADD PHOTOS</button><br>";
+
 	let fileButton = "<button class='file-button' id='file-button'>+ ADD FILES</button>";
 	let postButton = "<button class='view-button' id='post-button'>POST</button>";
-	modal.innerHTML = "<center><div><p>" + myAuthor + "" + inputtf +
-		"</div></div>" + imgButton + vButton + fileButton + postButton + "<div class='close-button'></div>";
+	let htmlString = `
+	<table border="0" class="tbn" align="center">
+    <tr>
+        <td style="text-align:left; vertical-align:middle;height: 50;padding:2px;">
+		<span id="yourname" style="color: #C34632; margin-left: 10px;">Anonymous</span>
+        </td>
 
-	modal.style.position = 'fixed';
-	modal.style.top = '36%';
-	modal.style.left = '50%';
-	modal.style.width = '400px';
-	modal.style.height = 'auto';
-	modal.style.transform = 'translate(-50%, -50%)';
+        <td style="text-align:center; vertical-align:middle; padding:5px;">
+            <label class="toggle-switch">
+                <input type="checkbox" unchecked>
+                <span class="slider"></span>
+            </label>
+        </td>
+    </tr>
 
-	modal.style.backgroundColor = 'white';
+    <tr>
+        <td colspan="2" style="">
+            <textarea id='caption' name='caption' maxlength='320' placeholder='Write something...'></textarea>
+            <div id="show-image" class="image-container" style="display:block; height:auto">
+				<div id='thumbnails' style="text-align: center;"></div>
+                
+            </div>
+            <div id="toolbar" align="center" style="width:100%;">
+                <table border="0" align="center" style="width:100%;">
+                    <tr>
+                        <td style="width: 7%">
+                            <div>
+                                <img src="Aa_square.png" width="36px" id="toolbar-1">
+                            </div>
+                        </td>
+                        <td style="width: 7%">
+                            <div>
+                                <img src="photos.png" width="36px" id="toolbar-2">
+                            </div>
+                        </td>
+                        <td style="width: 7%">
+                            <div>
+                                <img src="linkurl.png" width="36px" id="toolbar-3">
+                            </div>
+                        </td>
+                        <td style="width: auto">
+                            <div style="text-align:right;display: none;" id="toolbar-4">
+                                <img src="reset.png" width="35px">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+	</table>
+	`;
+	modal.innerHTML = "<center><div><p>" + myAuthor + "" +
+		"</div></div>" + imgButton + htmlString + postButton + "<div class='close-button'></div>";
 
-	modal.style.padding = '20px';
-	modal.style.border = '1px #aaa';
-	modal.style.borderRadius = '10px';
-	modal.style.zIndex = '9999';
-
-	// Style close button
+	modal.style.cssText = `
+		position: fixed;
+		top: 42%;
+		left: 50%;
+		width: 350px;
+		height: auto;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		padding: 20px;
+		border: 1px solid #aaa;
+		border-radius: 10px;
+		z-index: 9999;
+	`;
 
 	var captionArea = modal.querySelector('#caption');
 
-	captionArea.style.paddingTop = "80px";
-	captionArea.style.paddingBottom = "80px";
-	captionArea.style.fontSize = "1.5em";
-	captionArea.style.fontWeight = "bold";
-	captionArea.style.textAlign = "center";
-	captionArea.style.background = gradients[rnum];
-	captionArea.style.textShadow = "2px 2px 4px rgba(0, 0, 0, 0.4)";
-	captionArea.style.color = "#fff";
-	captionArea.style.height = "auto";
-	captionArea.style.height = `${captionArea.scrollHeight + 200}px`;
-
 
 	var closeButton = modal.querySelector('.close-button');
-	closeButton.style.position = 'absolute';
-	closeButton.style.top = '108%';
-	closeButton.style.left = '44%';
-	closeButton.style.fontSize = '35px';
+	closeButton.style.cssText = `
+    	position: absolute;
+    	top: 108%;
+    	left: 44%;
+    	font-size: 35px;
+    	cursor: pointer;
+    	background: transparent;
+    	font-size: 35px;
+    	cursor: pointer;`;
+	closeButton.innerHTML = '<div class="circle"><span><big><big>&times;</span></div>';
 
-	closeButton.style.cursor = 'pointer';
-
-	closeButton.style.background = 'transparent'; // remove the background image property
-	closeButton.innerHTML = '<div class="circle"><span><big><big>&times;</span></div>'; // wrap the X icon inside a div element with a class name for the circle
-	closeButton.style.fontSize = '35px';
-	closeButton.style.cursor = 'pointer';
-
-
-
-	// Add overlay with grey background
-	var overlay = document.createElement('div');
-	overlay.style.position = 'fixed';
-	overlay.style.top = '0';
-	overlay.style.left = '0';
-	overlay.style.width = '100%';
-	overlay.style.height = '100%';
-	overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
-	overlay.style.zIndex = '9998';
-
-	// Add event listener to close button
 	closeButton.addEventListener('click', function () {
 		modal.remove();
 		overlay.remove();
 	});
 
-	let viewButton = modal.querySelector('#v-button');
-	viewButton.style.marginTop = '15px';
-	viewButton.style.marginBottom = '5px';
-
-	viewButton.style.fontWeight = 'bold';
-	viewButton.style.borderRadius = '15px';
-	viewButton.style.width = '350px';
-	viewButton.style.backgroundColor = '#75c73f';
-	viewButton.style.height = '45px';
-
-	let fButton = modal.querySelector('#file-button');
-	fButton.style.marginTop = '5px';
-	fButton.style.marginBottom = '5px';
-
-	fButton.style.fontWeight = 'bold';
-	fButton.style.backgroundColor = 'lightgrey';
-	fButton.style.borderRadius = '15px';
-	fButton.style.width = '350px';
-
-	fButton.disabled = 'true';
+	var overlay = document.createElement('div');
+	overlay.style.cssText = `
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.85);
+		z-index: 9998;
+	`;
 
 	let posButton = modal.querySelector('#post-button');
-	posButton.style.marginTop = '5px';
-	posButton.style.marginBottom = '15px';
-
-	posButton.style.fontWeight = 'bold';
-	posButton.style.borderRadius = '15px';
-	posButton.style.width = '350px';
-
-	posButton.disabled = 'true';
-
-
+	posButton.style.cssText = `
+		margin-top: 10px;
+		margin-bottom: 15px;
+		font-weight: bold;
+		border-radius: 15px;
+		width: 300px;
+	`;
+	posButton.disabled = true;
 
 
 
+	let toolbar1 = modal.querySelector('#toolbar-1');
+	let toolbar2 = modal.querySelector('#toolbar-2');
+	let toolbar3 = modal.querySelector('#toolbar-3');
+	let toolbar4 = modal.querySelector('#toolbar-4');
 
+	toolbar1.addEventListener('click', function (event) {
+		rnum = randomNum(0, (gradients.length - 1));
+		captionArea.style.paddingTop = "80px";
+		captionArea.style.paddingBottom = "80px";
+		captionArea.style.fontSize = "1.5rem";
+		captionArea.style.textAlign = "center";
+		captionArea.style.background = gradients[rnum];
+		captionArea.style.textShadow = "2px 2px 4px rgba(0, 0, 0, 0.4)";
+		captionArea.style.color = "#fff";
+		captionArea.style.height = "auto";
+		captionArea.style.height = `${quoteTextarea.scrollHeight + 200}px`;
+		//toolbar4.style.display = 'block';
+		toolbar2.style.display = 'none';
+		toolbar3.style.display = 'none';
+	});
 
-	viewButton.addEventListener('click', function () {
-		captionArea.style.paddingTop = "";
-		captionArea.style.paddingBottom = "";
-		captionArea.style.fontSize = "";
-		captionArea.style.fontWeight = "";
-		captionArea.style.textAlign = "";
-		captionArea.style.background = "";
-		captionArea.style.textShadow = "";
-		captionArea.style.color = "";
-		captionArea.style.height = "10px";
+	toolbar2.addEventListener('click', function () {
+		captionArea.style.cssText = `
+		padding-top: "";
+		padding-bottom: "";
+		font-size: "";
+		font-weight: "";
+		text-align: "";
+		background: "";
+		text-shadow: "";
+		color: "";
+		height: 10px;
+	`;
 		selectFile();
 
 	});
@@ -224,55 +260,25 @@ showFormButton.addEventListener('click', function () {
 		overlay.remove();
 	});
 
-
-
-
-
-
 	// Add modal and overlay to the page
 	document.body.appendChild(modal);
 	document.body.appendChild(overlay);
 
-
 	//POSTBUTTON
 	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON
-	//POSTBUTTON	
-	//POSTBUTTON
-
 
 	posButton.addEventListener('click', function () {
 
+		let bkg = "";
+
+		if (rnum === "") {
+			bkg = "";
+		} else {
+			bkg = gradients[rnum];
+		}
+
 		if (sessionStorage.getItem("link") === "?") {
-			if (saveData("ehst", "?", "@username", "?", Textarea.value, gradients[rnum])) {
+			if (saveData("ehst", "?", "@username", "?", Textarea.value, bkg)) {
 				modal.remove();
 				overlay.remove();
 			}
@@ -281,11 +287,8 @@ showFormButton.addEventListener('click', function () {
 				modal.remove();
 				overlay.remove();
 			}
-
 		}
-
 	});
-
 
 	var Textarea = document.querySelector('#caption');
 
@@ -299,8 +302,6 @@ showFormButton.addEventListener('click', function () {
 			posButton.disabled = true;
 		}
 	});
-
-
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -328,8 +329,6 @@ searchBt.addEventListener('click', function () {
 	showFormButton.innerHTML = "<b>Search results for \"" + sk + "\"</b>";
 	window.location.href = "#top";
 	column1.style.backgroundColor = "#f2cbc1";
-
-
 	loadDatabase(1000, sk);
 	document.getElementById("search-in").value = "";
 });
@@ -414,16 +413,14 @@ UU:::::U     U:::::UUPP:::::P     P:::::PLL:::::::LL             O:::::::OOO::::
 
 function uploadImages() {
 
+	const theToolbar = document.getElementById('toolbar');
 	const imageInput = document.getElementById('img-button');
 	const files = imageInput.files;
 	const thumbnailsDiv = document.getElementById('thumbnails');
-	const vInput = document.getElementById('v-button');
+	//const vInput = document.getElementById('v-button');
 	const posButton = document.getElementById('post-button');
 
-	vInput.style.display = 'none';
-	//const uploadDiv = document.getElementById('updiv');
-
-	//uploadDiv.style.display = 'none';
+	//vInput.style.display = 'none';
 
 	for (let i = 0; i < files.length; i++) {
 		const file = files[i];
@@ -451,9 +448,9 @@ function uploadImages() {
 				storageRef.getDownloadURL().then(downloadURL => {
 					// Create thumbnail image element
 					const thumbnail = document.createElement('img');
-					thumbnail.src = downloadURL;
-					thumbnail.style.maxHeight = 200;
-					thumbnail.style.maxWidth = 200;
+					thumbnail.src = sessionStorage.getItem("base64");;
+					thumbnail.style.maxHeight = "200px";
+					thumbnail.style.maxWidth = "300px";
 					thumbnail.style.margin = '1px';
 
 					// Create link for download
@@ -466,7 +463,9 @@ function uploadImages() {
 					imageContainer.innerHTML = '';
 					imageContainer.appendChild(thumbnail);
 					posButton.disabled = false;
+					theToolbar.style.display = 'none';
 					sessionStorage.setItem("link", downloadURL);
+
 					console.log(sessionStorage.getItem("link"));
 				}).catch(error => {
 					console.error('Failed to get download URL:', error);
@@ -682,11 +681,22 @@ function loadDatabase(itemCount, searchkey) {
 
 			if (childData.quote === "?") {
 				if (childData.hasOwnProperty('caption')) {
-					if (childData.caption.length < 160) {
-						myCaption = "<p style='background:" + childData.background + ";text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); color: #fff;white-space: pre-line;text-align:center; font-weight: bold;font-size:1.5em; word-wrap:break-word;padding:100px'>" + childData.caption + "</p>";
+
+					let myBackground = "";
+
+					let fontSize = (childData.caption.length < 160) ? "font-size:1.5" : "font-size:1.2";
+
+
+					if (childData.background === "") {
+						myBackground = "" + ";white-space: pre-line;text-align:left; font-weight: bold;word-wrap:break-word;padding:5px'"
 					} else {
-						myCaption = "<p style='background:" + childData.background + ";text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); color: #fff;white-space: pre-line;text-align:center; font-weight: normal;font-size:1.2em; word-wrap:break-word;padding:100px'>" + childData.caption + "</p>";
+						myBackground = childData.background + ";text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); color: #fff;white-space: pre-line;text-align:center; font-weight: bold;" + fontSize + "em; word-wrap:break-word;padding:100px'";
 					}
+
+
+
+					myCaption = "<p style='background:" + myBackground + ">" + childData.caption + "</p>";
+
 
 				}
 				//myQuote = "<img src='" + imageURL + "' alt='Cannot load image 😓' id='load-image' style='width: 100%;'>";
@@ -717,17 +727,27 @@ function loadDatabase(itemCount, searchkey) {
 				//"<td><span style='color:#ed4c2b;font-size: 18px'>" + myAuthor + "</span></td>" +
 				"</tr>" +
 				"<tr>" +
-				"<td><em style='color:#2c94fb;word-wrap: break-word;font-size: 12px'>" + childData.subtitle + "</em></td>" +
+				"<td><span style='color:#2c94fb;word-wrap: break-word;font-size: 12px'>" + myTime + "</span></td>" +
 				"</tr>" +
 				"</table>";
 
 			//"<td><em style='color:#2c94fb;word-wrap: break-word;font-size: 12px'>" + myTitle + "</em></td>" +
 
+			let rowData = "";
 
-			rrow.innerHTML =
+			rowData =
 				divStyle + tableHTML + myQuote + myCaption +
-				"<span style='color:#808080; font-size: 14px;'><hr>&nbsp;&nbsp;" + myTime +
-				"</span><br><span style='color:#008ba3; font-size: 14px;'>&nbsp;&nbsp;" + myViews + getTotalReact(childData.key) + "</span><br><div style='height:10'></div></td>";
+				"<span style='color:#808080; font-size: 14px;'><hr>&nbsp;&nbsp;" + myViews + "";
+
+			if (getTotalReact(childData.key) == 0) {
+				rowData = rowData + "</span><br><span style='color:#008ba3; font-size: 14px;'>&nbsp;&nbsp;" + "Be the first to Interact" + "</span><br><div style='height:10'></div></td>";;
+			} else {
+				rowData = rowData + "</span><br><span style='color:#008ba3; font-size: 14px;'>&nbsp;&nbsp;" + getTotalReact(childData.key) + "</span><br><div style='height:10'></div></td>";
+			}
+
+			rrow.innerHTML = rowData;
+
+
 
 			/////////////////////////////////////////////////////////
 
@@ -755,7 +775,8 @@ function loadDatabase(itemCount, searchkey) {
 
 
 
-			rrow.addEventListener("click", function () {
+			rrow.addEventListener("contextmenu", function () {
+				event.preventDefault();
 				database.ref('quotes/' + childData.key).update({
 					views: eval(childData.views) + eval(1)
 				});
@@ -886,8 +907,6 @@ function loadDatabase(itemCount, searchkey) {
 				viewButton.addEventListener('click', function () {
 					openLink(childData.quote);
 					//react
-
-
 					modal.remove();
 					overlay.remove();
 
@@ -942,12 +961,219 @@ function loadDatabase(itemCount, searchkey) {
 				document.body.appendChild(modal);
 				document.body.appendChild(overlay);
 
-				updatelike("loves", childData.key);
-				updatelike("likes", childData.key);
-				updatelike("wows", childData.key);
-				updatelike("hahas", childData.key);
-				updatelike("frowns", childData.key);
-				updatelike("dislikes", childData.key);
+				for (let i = 0; i < reactArr.length; i++) {
+					updatelike(reactArr[i], childData.key);
+				}
+			});
+
+			/*
+RRRRRRRRRRRRRRRRR   RRRRRRRRRRRRRRRRR        OOOOOOOOO     WWWWWWWW                           WWWWWWWW
+R::::::::::::::::R  R::::::::::::::::R     OO:::::::::OO   W::::::W                           W::::::W			
+R::::::RRRRRR:::::R R::::::RRRRRR:::::R  OO:::::::::::::OO W::::::W                           W::::::W
+RR:::::R     R:::::RRR:::::R     R:::::RO:::::::OOO:::::::OW::::::W                           W::::::W
+  R::::R     R:::::R  R::::R     R:::::RO::::::O   O::::::O W:::::W           WWWWW           W:::::W 
+  R::::R     R:::::R  R::::R     R:::::RO:::::O     O:::::O  W:::::W         W:::::W         W:::::W  
+  R::::RRRRRR:::::R   R::::RRRRRR:::::R O:::::O     O:::::O   W:::::W       W:::::::W       W:::::W   
+  R:::::::::::::RR    R:::::::::::::RR  O:::::O     O:::::O    W:::::W     W:::::::::W     W:::::W    
+  R::::RRRRRR:::::R   R::::RRRRRR:::::R O:::::O     O:::::O     W:::::W   W:::::W:::::W   W:::::W     
+  R::::R     R:::::R  R::::R     R:::::RO:::::O     O:::::O      W:::::W W:::::W W:::::W W:::::W      
+  R::::R     R:::::R  R::::R     R:::::RO:::::O     O:::::O       W:::::W:::::W   W:::::W:::::W       
+  R::::R     R:::::R  R::::R     R:::::RO::::::O   O::::::O        W:::::::::W     W:::::::::W        
+RR:::::R     R:::::RRR:::::R     R:::::RO:::::::OOO:::::::O         W:::::::W       W:::::::W         
+R::::::R     R:::::RR::::::R     R:::::R OO:::::::::::::OO           W:::::W         W:::::W          
+R::::::R     R:::::RR::::::R     R:::::R   OO:::::::::OO              W:::W           W:::W           
+RRRRRRRR     RRRRRRRRRRRRRRR     RRRRRRR     OOOOOOOOO                 WWW             WWW            			COMMENTS SECTION*/
+
+
+
+			rrow.addEventListener("click", function () {
+				event.preventDefault();
+
+				const commentsRef = database.ref(`quotes/${childData.key}/comments`);
+				var comments = [];
+				commentsRef.on('value', function (snapshot) {
+					
+					snapshot.forEach(function (commentSnapshot) {
+						var commentData = commentSnapshot.val();
+						commentData.key = commentSnapshot.key;
+
+						comments.push(commentData);
+						console.log(comments);
+					});
+
+					comments.reverse(); // Reverse the order of the quotes
+
+				});
+
+
+				comments.forEach(function (commentData) {
+					alert(commentData.message);
+
+				});
+
+
+				// Create modal with delete button and close button
+
+				selectedText = "";
+
+				var counter = false;
+				var modal = document.createElement('div');
+
+
+				let myAuthor = "<b style='color:#ed4c2b;'>" + childData.author + "</b>";
+				let myTitle = "<em style='color:green;word-wrap: break-word;'>" + childData.title + "</em>";
+				let tinyMargin = "<small><small><br><br></small></small>";
+				let myViews = "<span style='color:#808080'>" + childData.views + " visits | " + childData.views + " views</span>";
+
+				let dButton = "<a class='delete-button'>&nbsp; Delete  &nbsp;</a>";
+				let pButton = "<a class='pin-button'>&nbsp; Pin Post &nbsp;</a>";
+
+
+
+
+				let vButton = "<button class='view-button'>VIEW HD IMAGE</button>";
+				let scaption = "<p style='white-space: pre-line;text-align:center; font-size:12px; word-wrap:break-word;padding:0px'>" + childData.caption + "</p>"
+
+
+
+				modal.innerHTML = "<center><div><p>" + "Comments" + "<br>" +
+					"<section id='selectabletext' ontouchend='getSelectedText()' onmouseup='getSelectedText()'>" + "</section></div></div>" + vButton + "<br>" + "<a class='pin-button'>Unpin Post</a><a class='delete-button' style='display:none'>Delete</a>" + "<div class='close-button'></div>";
+
+
+
+				modal.style.position = 'fixed';
+				modal.style.top = '36%';
+				modal.style.left = '50%';
+				modal.style.width = '300px';
+				modal.style.height = 'auto';
+				modal.style.transform = 'translate(-50%, -50%)';
+
+				modal.style.backgroundColor = 'white';
+
+				modal.style.padding = '20px';
+				modal.style.border = '1px #aaa';
+				modal.style.borderRadius = '10px';
+				modal.style.zIndex = '9999';
+
+				// Style close button
+				var closeButton = modal.querySelector('.close-button');
+				closeButton.style.position = 'absolute';
+				closeButton.style.top = '108%';
+				closeButton.style.left = '44%';
+				closeButton.style.fontSize = '35px';
+
+				closeButton.style.cursor = 'pointer';
+
+				closeButton.style.background = 'transparent'; // remove the background image property
+				closeButton.innerHTML = '<div class="circle"><span><big><big>&times;</span></div>'; // wrap the X icon inside a div element with a class name for the circle
+				closeButton.style.fontSize = '35px';
+				closeButton.style.cursor = 'pointer';
+
+
+
+				// Add overlay with grey background
+				var overlay = document.createElement('div');
+				overlay.style.position = 'fixed';
+				overlay.style.top = '0';
+				overlay.style.left = '0';
+				overlay.style.width = '100%';
+				overlay.style.height = '100%';
+				overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
+				overlay.style.zIndex = '9998';
+
+				// Add event listener to close button
+				closeButton.addEventListener('click', function () {
+					modal.remove();
+					overlay.remove();
+				});
+
+
+				var viewButton = modal.querySelector('.view-button');
+				viewButton.style.marginTop = '5px';
+				viewButton.style.marginBottom = '15px';
+
+				viewButton.style.fontWeight = 'bold';
+				viewButton.style.borderRadius = '15px';
+				viewButton.style.width = '200px';
+				//viewButton.style.display = 'none';
+
+				var deleteButton = modal.querySelector('.delete-button');
+
+				deleteButton.style.color = '#ccc';
+				deleteButton.style.cursor = 'pointer';
+
+				var pinButton = modal.querySelector('.pin-button');
+
+				pinButton.style.color = '#ccc';
+				pinButton.style.cursor = 'pointer';
+
+				var cells = document.querySelectorAll('#myTable td');
+				cells.forEach(function (cell) {
+					cell.addEventListener('click', function () {
+						alert('Cell clicked: ' + cell.textContent);
+						console.log("ddsgsdgdsg");
+						// You can replace the alert with your desired action or code
+					});
+				});
+
+				viewButton.addEventListener('click', function () {
+					openLink(childData.quote);
+					setComment(childData.key, user, randomNum(0, (1000000)));
+					modal.remove();
+					overlay.remove();
+				});
+
+				closeButton.addEventListener('click', function () {
+					modal.remove();
+					overlay.remove();
+				});
+
+				// Delete quote from database when delete button is clicked
+				deleteButton.addEventListener('click', function () {
+
+					if (!counter) {
+						deleteButton.innerHTML = "&#x2713; Confirm";
+						pinButton.innerHTML = "";
+						counter = true;
+					} else {
+
+						database.ref('quotes/' + childData.key).remove()
+							.then(() => {
+								console.log("Data successfully deleted");
+							})
+							.catch((error) => {
+								console.log("Error deleting data:", error);
+							});
+						modal.remove();
+						overlay.remove();
+						notif.style.display = "none";
+
+					}
+
+				});
+
+				pinButton.addEventListener('click', function () {
+
+					if (!counter) {
+						pinButton.innerHTML = "&#x2713; Confirm";
+						deleteButton.innerHTML = "";
+						counter = true;
+					} else {
+						togglePin(childData.key);
+						modal.remove();
+						overlay.remove();
+
+					}
+
+				});
+
+				// Add modal and overlay to the page
+				document.body.appendChild(modal);
+				document.body.appendChild(overlay);
+
+				for (let i = 0; i < reactArr.length; i++) {
+					updatelike(reactArr[i], childData.key);
+				}
 			});
 
 			loading.style.display = 'none';
@@ -970,6 +1196,7 @@ function loadDatabase(itemCount, searchkey) {
 
 
 }
+
 
 /*                                                                                                                                                       
 																							dddddddd                                                           
@@ -995,7 +1222,7 @@ s::::::::::::::s a:::::aaaa::::::a          v:::::v          e::::::::eeeeeeee  
 function saveData(title, quote, author, tbn, caption, background) {
 	inputChanged = false;
 	saveButton.disabled = true;
-	let rnum = randomNum(0, (gradients.length - 1));
+
 
 	if (title === '' || author === '') {
 		return false;
@@ -1087,14 +1314,19 @@ function getTrueLikesCount(type, entryId, callback) {
 function updatelike(type, entryId) {
 	getTrueLikesCount(type, entryId, (trueLikesCount) => {
 		// Update the content of the span with the true likes count
-		if (trueLikesCount === 0) {
-			document.getElementById(`${type}`).innerText = ` `;
-		} else {
-			document.getElementById(`${type}`).innerText = `${trueLikesCount}`;
-		}
 
+		const element = document.getElementById(`${type}`);
+
+		if (element) {
+			if (trueLikesCount === 0) {
+				element.innerText = ` `;
+			} else {
+				element.innerText = `${trueLikesCount}`;
+			}
+		}
 	});
 }
+
 
 function togglePin(quoteId) {
 	// Toggle the like status for the user on this quote
@@ -1110,23 +1342,16 @@ function getReactCount(type, entryId) {
 }
 
 function getTotalReact(entryId) {
-	let react = "";
-
-	getReactCount("loves", entryId);
-	getReactCount("likes", entryId);
-	getReactCount("wows", entryId);
-	getReactCount("hahas", entryId);
-	getReactCount("frowns", entryId);
-	getReactCount("dislikes", entryId);
-
+	let react = String();
 	let myHashMap = {};
 
-	myHashMap['loves'] = parseInt(sessionStorage.getItem("loves"), 10);
-	myHashMap['likes'] = parseInt(sessionStorage.getItem("likes"), 10);
-	myHashMap['wows'] = parseInt(sessionStorage.getItem("wows"), 10);
-	myHashMap['hahas'] = parseInt(sessionStorage.getItem("hahas"), 10);
-	myHashMap['frowns'] = parseInt(sessionStorage.getItem("frowns"), 10);
-	myHashMap['dislikes'] = parseInt(sessionStorage.getItem("dislikes"), 10);
+	for (let i = 0; i < reactArr.length; i++) {
+		getReactCount(reactArr[i], entryId);
+	}
+
+	for (let i = 0; i < reactArr.length; i++) {
+		myHashMap[reactArr[i]] = parseInt(sessionStorage.getItem(reactArr[i]), 10);
+	}
 
 	let keyValueArray = Object.entries(myHashMap);
 	// Sort the array based on the values in descending order
@@ -1168,12 +1393,20 @@ function getTotalReact(entryId) {
 	if (totalValue === 0) {
 		return ("");
 	} else {
-		return (" • " + react + "" + totalValue);
+		return (react + "" + totalValue + " • " + "No Comments");
 	}
-
-
 }
 
+function setComment(quoteId, username, message) {
 
+	console.log(message);
+	// Assuming you have a 'comments' node under each quoteId
+	const commentsRef = database.ref(`quotes/${quoteId}/comments`);
 
+	// Push a new comment object with username and message
+	commentsRef.push({
+		username: username,
+		message: message
+	});
+}
 
