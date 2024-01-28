@@ -222,7 +222,7 @@ showFormButton.addEventListener('click', function () {
 		margin-bottom: 15px;
 		font-weight: bold;
 		border-radius: 15px;
-		width: 300px;
+		width: 100%;
 	`;
 	posButton.disabled = true;
 
@@ -1041,10 +1041,10 @@ RRRRRRRR     RRRRRRRRRRRRRRR     RRRRRRR     OOOOOOOOO                 WWW      
 				// Check if the viewport is in landscape or portrait mode
 				if (window.matchMedia("(orientation: landscape)").matches) {
 					// Landscape mode (desktop)
-					modal.style.width = `max(30%, ${minWidth}px)`;
+					modal.style.width = `max(27.5%, ${minWidth}px)`;
 				} else {
 					// Portrait mode (mobile devices)
-					modal.style.width = `max(90%, ${minWidth}px)`;
+					modal.style.width = `max(95%, ${minWidth}px)`;
 				}
 
 
@@ -1373,7 +1373,7 @@ function loadComments(key, commentTB) {
 					<img src=${profileHashMap[commentData.username]} alt='Profile Image' width='32' style='border-radius: 50%;'>
 				</td>
 				<td style="padding: 1px; text-align: center;">
-					<div style="max-width: 330px; height: auto; background-color: #ffffff; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+					<div style="max-width: 310px; height: auto; background-color: #ffffff; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 					padding: 5px; margin: 5px;  text-align: left;">
 					<span style="color: #666666;font-size:0.9em;word-wrap: break-word;">${commentData.username}: ${commentData.message}</span>
 					<br>
