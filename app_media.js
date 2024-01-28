@@ -21,10 +21,6 @@ var searchBox = document.querySelector('#search-box');
 var banner = document.querySelector('#banner');
 var nav = document.querySelector('#navigate');
 var backBtn = document.querySelector('#backbtn');
-var toolbar1 = document.querySelector('#toolbar-1');
-var toolbar2 = document.querySelector('#toolbar-2');
-var toolbar3 = document.querySelector('#toolbar-3');
-var toolbar4 = document.querySelector('#toolbar-4');
 var imgCancel = document.querySelector('#img-cancel');
 var urlTxt = document.querySelector('#url-txt');
 
@@ -69,24 +65,21 @@ const gradients = [
   "linear-gradient(to bottom, #FF8770, #74CFB8)",
   "linear-gradient(to bottom, #9b1df0, #5F9EA0)",
   "linear-gradient(to bottom, #FF6347, #FFE4E1)",
-  "linear-gradient(to bottom, #8A2BE2, #00CED1)",
-  "linear-gradient(to bottom, #FF1493, #8A2BE2)",
-  "linear-gradient(to top, #EB5757, #E73C7E)",
-  "linear-gradient(to bottom, #ADD8E6, #3F0071)",
+  "linear-gradient(to bottom, #8A2BE2, #64f7fa)",
+  "linear-gradient(to bottom, #ff4dac, #d6affa)",
+  "linear-gradient(to bottom, #ADD8E6, #cc8dff)",
   "linear-gradient(to bottom, #DC143C, #ffb3b3)",
   "linear-gradient(to bottom, #FF69B4, #32CD32)",
-  "linear-gradient(to bottom, #1F1F1F, #C70B1B)",
   "linear-gradient(to top, #FF6B6B, #6B6BFF)",
   "linear-gradient(to top, #FF8770, #74CFB8)",
   "linear-gradient(to top, #9b1df0, #5F9EA0)",
   "linear-gradient(to top, #FF6347, #FFE4E1)",
-  "linear-gradient(to top, #8A2BE2, #00CED1)",
-  "linear-gradient(to top, #FF1493, #8A2BE2)",
-  "linear-gradient(to top, #ADD8E6, #3F0071)",
+  "linear-gradient(to top, #8A2BE2, #64f7fa)",
+  "linear-gradient(to top, #ff4dac, #d6affa)",
+  "linear-gradient(to top, #ADD8E6, #cc8dff)",
   "linear-gradient(to top, #DC143C, #ffb3b3)",
   "linear-gradient(to top, #FF69B4, #32CD32)",
-  "linear-gradient(to top, #1F1F1F, #C70B1B)"
-
+  "linear-gradient(to bottom, #A8A8A8, #E6E6E6)"
 ];
 
 let profileHashMap = {
