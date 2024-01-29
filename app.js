@@ -20,8 +20,14 @@ window.onload = function () {
 	}, 0);
 }
 
-const user = "judefrancis";
+let user = "";
 const name = "";
+
+let uarray = ["judefrancis", "christian", "jennnn", "laurajane", "raychris", "regner", "merneldawn", "edwardJED"];
+
+var userInput = randomNum(0, (uarray.length - 1));
+
+user = uarray[parseInt(userInput)];
 
 const internetTime = Date.now();
 var items = 10;
@@ -113,7 +119,7 @@ showFormButton.addEventListener('click', function () {
 		<span id="yourname" style="color: #C34632; margin-left: 10px;">Anonymous</span>
         </td>
 
-        <td style="text-align:center; vertical-align:middle; padding:5px;">
+        <td style="text-align:center; vertical-align:middle; padding:15px;">
             <label class="toggle-switch">
                 <input type="checkbox" unchecked>
                 <span class="slider"></span>
@@ -288,12 +294,12 @@ showFormButton.addEventListener('click', function () {
 		}
 
 		if (sessionStorage.getItem("link") === "?") {
-			if (saveData("ehst", "?", "@username", "?", Textarea.value, bkg)) {
+			if (saveData("?", user, "?", Textarea.value, bkg)) {
 				modal.remove();
 				overlay.remove();
 			}
 		} else {
-			if (saveData("TOKEN EXPIRED", sessionStorage.getItem("link"), "@guest", sessionStorage.getItem("base64"), Textarea.value, null)) {
+			if (saveData(sessionStorage.getItem("link"), user, sessionStorage.getItem("base64"), Textarea.value, null)) {
 				modal.remove();
 				overlay.remove();
 			}
@@ -641,7 +647,7 @@ function loadDatabase(itemCount, searchkey) {
 			var childData = childSnapshot.val();
 			childData.key = childSnapshot.key;
 
-			if (((childData.hasOwnProperty('author') && childData.author.indexOf(searchkey) !== -1) || (childData.hasOwnProperty('quote') && childData.quote.indexOf(searchkey) !== -1) || (childData.hasOwnProperty('title') && childData.title.indexOf(searchkey) !== -1))) {
+			if (((childData.hasOwnProperty('uname') && childData.uname.indexOf(searchkey) !== -1) || (childData.hasOwnProperty('quote') && childData.quote.indexOf(searchkey) !== -1) || (childData.hasOwnProperty('title') && childData.title.indexOf(searchkey) !== -1))) {
 				quotes.push(childData);
 			}
 		});
@@ -655,37 +661,47 @@ function loadDatabase(itemCount, searchkey) {
 
 
 			let divStyle = "";
+			let bkgStyle = "";
+			let borderStyle = "";
+
 			if (childData.pinned) {
-				divStyle = "<td style='padding-top: 8px;padding-bottom: 8px;'><div id = 'rdiv' style='background-color: cornsilk; padding:0px; border: solid 1px orangered;'>";
+				bkgStyle = "background-color: cornsilk";
+				borderStyle = "orangered";
 			} else {
 				if (childData.views === '0') {
-					divStyle = "<td style='padding-top: 8px;padding-bottom: 8px;'><div id = 'rdiv' style='background-color: cornsilk; padding:0px; border: solid 1px #ccc;'>";
+					bkgStyle = "background-color: cornsilk";
+					borderStyle = "lightgrey";
 				} else {
-					divStyle = "<td style='padding-top: 8px;padding-bottom: 8px;'><div id = 'rdiv' style='background-color: white; padding:0px; border: solid 1px #ccc;'>";
+					bkgStyle = "background-color: white";
+					borderStyle = "lightgrey";
 				}
 			}
 
-
-
+			divStyle = `<td style='padding-top: 8px;padding-bottom: 8px;'>
+			<div id = 'rdiv' style='${bkgStyle}; padding:0px; border: solid 0px ${borderStyle};'><span style="font-size:0.1em">&nbsp;</span>`;
 
 			let myAuthor = "";
-			//NEW//
+			let indicator = "";
+			let userSpan = `<span style="color: #de3c35;font-size:0.8em;font-weight:bold;">${childData.uname} </span>`;
 
 			if (childData.pinned) {
-				myAuthor = "<b>@" + childData.author + " </b><span class='pin-label'><small><small>📌PINNED POST</small></small></span>";
+				indicator = `<span class="pin-label" style="font-size:0.6em">📌PINNED POST</span>`;
 			} else {
 				if (getTimeDiff(childData.timestamp) <= 0.5) {
-					myAuthor = "<b>@" + childData.author + " </b><span class='new-label'><small><small>NEW</small></small></span>";
+					indicator = ``;
 				} else {
-					myAuthor = "<b>@" + childData.author + "</b>";
+					indicator = ``;
 				}
 			}
+
+			myAuthor = `${userSpan} ${indicator}`;
+
 
 
 
 			let myViews = childData.views + " View" + (eval(childData.views) == 1 ? "" : "s");
 
-			let modAuthor = childData.author;
+			let modAuthor = childData.uname;
 			let myTitle = childData.title;
 			let myQuote = "";
 			let myCaption = "";
@@ -695,13 +711,13 @@ function loadDatabase(itemCount, searchkey) {
 
 					let myBackground = "";
 
-					let fontSize = (childData.caption.length < 160) ? "font-size:1.5" : "font-size:1.2";
+					let fontSize = (childData.caption.length < 160) ? "font-size:1.5em" : "font-size:1.2em";
 
 
 					if (childData.background === "") {
-						myBackground = "" + ";white-space: pre-line;text-align:left; font-weight: bold;word-wrap:break-word;padding:5px'"
+						myBackground = "" + ";white-space: pre-line;text-align:left; font-weight: bold;word-wrap:break-word;padding:10px'"
 					} else {
-						myBackground = childData.background + ";text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); color: #fff;white-space: pre-line;text-align:center; font-weight: bold;" + fontSize + "em; word-wrap:break-word;padding:100px'";
+						myBackground = childData.background + ";text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); color: #fff;white-space: pre-line;text-align:center; font-weight: bold;" + fontSize + "; word-wrap:break-word;padding:100px; font-family: sans-serif'";
 					}
 
 
@@ -733,16 +749,13 @@ function loadDatabase(itemCount, searchkey) {
 
 			var tableHTML = "<table style = 'margin:7px'>" +
 				"<tr>" +
-				"<td rowspan='2' style='text-align:center;'><img src='" + profileHashMap[user] + "' alt='Profile Image' width='32' style='border-radius: 50%;'></td>" +
+				"<td rowspan='2' style='text-align:center;'><img src='" + profileHashMap[childData.uname] + "' alt='Profile Image' width='32' style='border-radius: 50%;'></td>" +
 				"<td><span style='color:#ed4c2b;font-size: 18px'>" + myAuthor + "</span></td>" +
-				//"<td><span style='color:#ed4c2b;font-size: 18px'>" + myAuthor + "</span></td>" +
 				"</tr>" +
 				"<tr>" +
-				"<td><span style='color:#2c94fb;word-wrap: break-word;font-size: 12px'>" + myTime + "</span></td>" +
+				"<td><span style='color:#b0b3b8;word-wrap: break-word;font-size: 12px'>" + myTime + "</span></td>" +
 				"</tr>" +
 				"</table>";
-
-			//"<td><em style='color:#2c94fb;word-wrap: break-word;font-size: 12px'>" + myTitle + "</em></td>" +
 
 			let rowData = "";
 
@@ -800,7 +813,7 @@ function loadDatabase(itemCount, searchkey) {
 				var modal = document.createElement('div');
 
 
-				let myAuthor = "<b style='color:#ed4c2b;'>" + childData.author + "</b>";
+				let myAuthor = "<b style='color:#ed4c2b;'>" + childData.uname + "</b>";
 				let myTitle = "<em style='color:green;word-wrap: break-word;'>" + childData.title + "</em>";
 				let tinyMargin = "<small><small><br><br></small></small>";
 				let myViews = "<span style='color:#808080'>" + childData.views + " visits | " + childData.views + " views</span>";
@@ -808,19 +821,20 @@ function loadDatabase(itemCount, searchkey) {
 				let dButton = "<a class='delete-button'>&nbsp; Delete  &nbsp;</a>";
 				let pButton = "<a class='pin-button'>&nbsp; Pin Post &nbsp;</a>";
 
-
-
-
-				let rButton = "<table border='0' id = 'reactTable'>" +
-					"<tr><td><span onclick='toggleLike(\"loves\", \"" + childData.key + "\",\"" + user + "\")'>❤️</span><br><span id='loves' style='font-size: 10px; color: red;'></span></td>" +
-					"<td><span onclick='toggleLike(\"likes\", \"" + childData.key + "\",\"" + user + "\")'>👍</span><br><span id='likes' style='font-size: 10px; color: red;'></span></td>" +
-					"<td><span onclick='toggleLike(\"wows\", \"" + childData.key + "\",\"" + user + "\")'>🤩</span><br><span id='wows' style='font-size: 10px; color: red;'></span></td>" +
-					"<td><span onclick='toggleLike(\"hahas\", \"" + childData.key + "\",\"" + user + "\")'>😂</span><br><span id='hahas' style='font-size: 10px; color: red;'></span></td>" +
-					"<td><span onclick='toggleLike(\"frowns\", \"" + childData.key + "\",\"" + user + "\")'>😥</span><br><span id='frowns' style='font-size: 10px; color: red;'></span></td>" +
-					"<td><span onclick='toggleLike(\"dislikes\", \"" + childData.key + "\",\"" + user + "\")'>👎</span><br><span id='dislikes' style='font-size: 10px; color: red;'></span></td></tr></table>";
+				let rButton = `
+				<table border='0' id='reactTable'>
+				  <tr>
+					<td><span onclick='toggleLike("loves", "${childData.key}", "${user}")'>❤️</span><br><span id='loves' style='font-size: 10px; color: red;'></span></td>
+					<td><span onclick='toggleLike("likes", "${childData.key}", "${user}")'>👍</span><br><span id='likes' style='font-size: 10px; color: red;'></span></td>
+					<td><span onclick='toggleLike("wows", "${childData.key}", "${user}")'>🤩</span><br><span id='wows' style='font-size: 10px; color: red;'></span></td>
+					<td><span onclick='toggleLike("hahas", "${childData.key}", "${user}")'>😂</span><br><span id='hahas' style='font-size: 10px; color: red;'></span></td>
+					<td><span onclick='toggleLike("frowns", "${childData.key}", "${user}")'>😥</span><br><span id='frowns' style='font-size: 10px; color: red;'></span></td>
+					<td><span onclick='toggleLike("dislikes", "${childData.key}", "${user}")'>👎</span><br><span id='dislikes' style='font-size: 10px; color: red;'></span></td>
+				  </tr>
+				</table>`;
 
 				let vButton = "<button class='view-button'>VIEW HD IMAGE</button>";
-				let scaption = "<p style='white-space: pre-line;text-align:center; font-size:12px; word-wrap:break-word;padding:0px'>" + childData.caption + "</p>"
+				let scaption = "<p style='white-space: pre-line;text-align:center; font-size:12px; word-wrap:break-word;padding:0px'; >" + childData.caption + "</p>"
 
 				if (childData.pinned === false) {
 					if (childData.quote === "?") {
@@ -847,9 +861,7 @@ function loadDatabase(itemCount, searchkey) {
 				modal.style.width = '300px';
 				modal.style.height = 'auto';
 				modal.style.transform = 'translate(-50%, -50%)';
-
 				modal.style.backgroundColor = 'white';
-
 				modal.style.padding = '20px';
 				modal.style.border = '1px #aaa';
 				modal.style.borderRadius = '10px';
@@ -861,15 +873,11 @@ function loadDatabase(itemCount, searchkey) {
 				closeButton.style.top = '108%';
 				closeButton.style.left = '44%';
 				closeButton.style.fontSize = '35px';
-
 				closeButton.style.cursor = 'pointer';
-
 				closeButton.style.background = 'transparent'; // remove the background image property
 				closeButton.innerHTML = '<div class="circle"><span><big><big>&times;</span></div>'; // wrap the X icon inside a div element with a class name for the circle
 				closeButton.style.fontSize = '35px';
 				closeButton.style.cursor = 'pointer';
-
-
 
 				// Add overlay with grey background
 				var overlay = document.createElement('div');
@@ -887,22 +895,18 @@ function loadDatabase(itemCount, searchkey) {
 					overlay.remove();
 				});
 
-
 				var viewButton = modal.querySelector('.view-button');
 				viewButton.style.marginTop = '5px';
 				viewButton.style.marginBottom = '15px';
-
 				viewButton.style.fontWeight = 'bold';
 				viewButton.style.borderRadius = '15px';
 				viewButton.style.width = '200px';
 
 				var deleteButton = modal.querySelector('.delete-button');
-
 				deleteButton.style.color = '#ccc';
 				deleteButton.style.cursor = 'pointer';
 
 				var pinButton = modal.querySelector('.pin-button');
-
 				pinButton.style.color = '#ccc';
 				pinButton.style.cursor = 'pointer';
 
@@ -1015,13 +1019,20 @@ RRRRRRRR     RRRRRRRRRRRRRRR     RRRRRRR     OOOOOOOOO                 WWW      
 						</table>
 					</div>
 					<div style="display: flex; align-items: center;">
-    					<input id = "comment-input"
-							type="text" style="width: calc(100% - 50px); padding: 10px; margin-top: 5px; border: 1px solid #cccccc; border-radius: 5px;" maxlength='140' placeholder="Write a comment...">
-    					<button id = "comment-send"
-  							style="width: 50px; margin-top: 5px; margin-left: 5px; padding: 10px; background-color: #4CAF50; color: #ffffff; border: none; border-radius: 5px; cursor: pointer;">Send
-						</button>
-						</div>
-					<div class='close-button'></div>`;
+					<input id="comment-input"
+						type="text" style="width: calc(70% - 25px); padding: 10px; margin-top: 5px; border: 1px solid #cccccc; border-radius: 5px;" maxlength='140' placeholder="Write a comment...">
+					
+					<button id="comment-send2"
+						style="width: 50px; margin-top: 5px; margin-left: 5px; padding: 10px; background-color: #4CAF50; color: #ffffff; border: none; border-radius: 5px; cursor: pointer;">☺️
+					</button>
+				
+					<button id="comment-send"
+						style="width: 50px; margin-top: 5px; margin-left: 5px; padding: 10px; background-color: #4CAF50; color: #ffffff; border: none; border-radius: 5px; cursor: pointer;">▶
+					</button>
+				</div>					
+				<div class='close-button'></div>
+				
+`;
 
 				modal.style.position = 'fixed';
 				modal.style.top = '36%';
@@ -1041,10 +1052,10 @@ RRRRRRRR     RRRRRRRRRRRRRRR     RRRRRRR     OOOOOOOOO                 WWW      
 				// Check if the viewport is in landscape or portrait mode
 				if (window.matchMedia("(orientation: landscape)").matches) {
 					// Landscape mode (desktop)
-					modal.style.width = `max(27.5%, ${minWidth}px)`;
+					modal.style.width = `400px`;
 				} else {
 					// Portrait mode (mobile devices)
-					modal.style.width = `max(95%, ${minWidth}px)`;
+					modal.style.width = `330px`;
 				}
 
 
@@ -1156,80 +1167,74 @@ s::::::::::::::s a:::::aaaa::::::a          v:::::v          e::::::::eeeeeeee  
 
 */
 
-function saveData(title, quote, author, tbn, caption, background) {
+function saveData(quote, uname, tbn, caption, background) {
 	inputChanged = false;
 	saveButton.disabled = true;
 
 
-	if (title === '' || author === '') {
+	var lineBreakCount = (caption.match(/\n/g) || []).length;
+	if (lineBreakCount > 5) {
 		return false;
 	} else {
-		var lineBreakCount = (caption.match(/\n/g) || []).length;
-		if (lineBreakCount > 5) {
-			return false;
-		} else {
-			if (title.length > 2000) {
-				title = title.substring(0, 2000);
-			}
 
-			if (author.length > 50) {
-				author = author.substring(0, 50);
-			}
-
-			// Save form data to Firebase Realtime Database
-			if (navigator.onLine) {
-
-				var quoteRef = database.ref('quotes').push();
-
-				quoteRef.set({
-					title: title,
-					quote: limitCharacters(quote, 200),
-					author: author,
-					thumbnail: tbn,
-					sessionkey: internetTime,
-					pinned: false,
-					show: "true",
-					views: "0",
-					visits: "0",
-					background: background,
-					caption: caption,
-					subtitle: "Guest",
-					timestamp: firebase.database.ServerValue.TIMESTAMP
-				}, function (error) {
-					if (error) {
-						console.error("Failed to save quote:", error);
-						notif.style.display = "block";
-						if (error.code === "PERMISSION_DENIED") {
-							//alert("You don't have permission to save quotes.");
-							notif.innerHTML = "Database is locked";
-						} else if (error.code === "NETWORK_ERROR") {
-							//alert("No internet connection. Please check your network settings and try again.");
-							notif.innerHTML = "No internet connection.";
-						} else {
-							//alert("Failed to save quote. Please try again later.");
-							notif.innerHTML = "Failed to save link.";
-						}
-					} else {
-						myForm.style.display = 'none';
-						postFrom.reset();
-						showFormButton.style.display = 'block';
-						myContent.style.display = 'block';
-						notif.style.display = "block";
-						notif.innerHTML = "Shared Successfully!";
-						saveButton.disabled = false;
-					}
-
-				});
-
-			} else {
-				notif.style.display = "block";
-				notif.innerHTML = "No Connection";
-			}
-			return true;
-
+		if (uname.length > 50) {
+			uname = uname.substring(0, 50);
 		}
 
+		// Save form data to Firebase Realtime Database
+		if (navigator.onLine) {
+
+			var quoteRef = database.ref('quotes').push();
+
+			quoteRef.set({
+
+				quote: limitCharacters(quote, 200),
+				uname: uname,
+				thumbnail: tbn,
+				sessionkey: internetTime,
+				pinned: false,
+				show: "true",
+				views: "0",
+				visits: "0",
+				background: background,
+				caption: caption,
+				subtitle: "Guest",
+				timestamp: firebase.database.ServerValue.TIMESTAMP
+			}, function (error) {
+				if (error) {
+					console.error("Failed to save quote:", error);
+					notif.style.display = "block";
+					if (error.code === "PERMISSION_DENIED") {
+						//alert("You don't have permission to save quotes.");
+						notif.innerHTML = "Database is locked";
+					} else if (error.code === "NETWORK_ERROR") {
+						//alert("No internet connection. Please check your network settings and try again.");
+						notif.innerHTML = "No internet connection.";
+					} else {
+						//alert("Failed to save quote. Please try again later.");
+						notif.innerHTML = "Failed to save link.";
+					}
+				} else {
+					myForm.style.display = 'none';
+					postFrom.reset();
+					showFormButton.style.display = 'block';
+					myContent.style.display = 'block';
+					notif.style.display = "block";
+					notif.innerHTML = "Shared Successfully!";
+					saveButton.disabled = false;
+				}
+
+			});
+
+		} else {
+			notif.style.display = "block";
+			notif.innerHTML = "No Connection";
+		}
+		return true;
+
 	}
+
+
 }
 
 function toggleLike(type, quoteId, username) {
@@ -1375,9 +1380,12 @@ function loadComments(key, commentTB) {
 				<td style="padding: 1px; text-align: center;">
 					<div style="max-width: 310px; height: auto; background-color: #ffffff; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 					padding: 5px; margin: 5px;  text-align: left;">
-					<span style="color: #666666;font-size:0.9em;word-wrap: break-word;">${commentData.username}: ${commentData.message}</span>
+					<span style="color: #666666;font-size:0.8em;word-wrap: break-word;">
+					<span style="color: #4257B2;font-size:0.7em;font-weight: bold;">${commentData.username}</span>
 					<br>
-					<span style="color: #e1e1e1;font-size:0.7em;word-wrap:break-word;">${getTimeString(commentData.timestamp)}</span>
+					${commentData.message}</span>
+					<br>
+					<span style="color: #b0b3b8;font-size:0.7em;word-wrap:break-word;">${getTimeString(commentData.timestamp)}</span>
 					</div>
 				</td>
 			</tr>
