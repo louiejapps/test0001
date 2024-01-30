@@ -513,9 +513,9 @@ hr {
 }
 
 
-#rdiv:hover {
+/*#rdiv:hover {
     background: #edfed1 !important;
-}
+}*/
 
 #rdiv {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
