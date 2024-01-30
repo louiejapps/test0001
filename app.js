@@ -649,7 +649,7 @@ function loadDatabase(itemCount, searchkey) {
 				}
 			}
 
-			divStyle = `<td style='padding-top: 5px;padding-bottom: 5px;'>
+			divStyle = `<td style='padding-top: 7.5px;padding-bottom: 7.5px;'>
 			<div id = 'rdiv' style='${bkgStyle}; padding-top:2.5px; padding-bottom:2.5px; border: solid 0px ${borderStyle};'>`;
 
 			let myAuthor = "";
@@ -741,14 +741,20 @@ function loadDatabase(itemCount, searchkey) {
 					<span style="width: 100%; display: inline-block; text-align: center;">
 						<div id="react-div" onmouseover="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';
 							this.style.transition='background-color 0.3s ease'" onmouseout="this.style.backgroundColor='transparent';
-							this.style.transition='background-color 0.3s ease'"	style="background-color: transparent; padding: 10px; margin-right: 5px; cursor: pointer; color: #65676b;
+							this.style.transition='background-color 0.3s ease'"	
+							ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
+							ontouchend="this.style.backgroundColor='transparent';" 
+							style="background-color: transparent; padding: 10px; margin-right: 5px; cursor: pointer; color: #65676b;
 							font-weight: bold;">😊React</div>
 					</span>
 			
 					<span style="width: 100%; display: inline-block; text-align: center;">
 							<div id="comment-div" onmouseover="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';
 							this.style.transition='background-color 0.3s ease'" onmouseout="this.style.backgroundColor='transparent';
-							this.style.transition='background-color 0.3s ease'" style="background-color: transparent; padding: 10px; cursor: pointer; color: #65676b;
+							this.style.transition='background-color 0.3s ease'"
+							ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
+							ontouchend="this.style.backgroundColor='transparent';" 
+							style="background-color: transparent; padding: 10px; cursor: pointer; color: #65676b;
 							font-weight: bold;">🗨️Comment</div>
 					</span>
 		
