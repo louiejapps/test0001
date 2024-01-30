@@ -50,7 +50,9 @@ headerImage.src = imageHeader;
 
 var childNum = 0;
 document.title = "Liszt | " + user;
-loadDatabase(items, "");
+loadDatabase(items, "", true, pinTableBody);
+loadDatabase(items, "", false, quoteTableBody);
+
 
 const reactArr = ["loves", "likes", "wows", "hahas", "frowns", "dislikes"];
 
@@ -353,7 +355,7 @@ searchBt.addEventListener('click', function () {
 	showFormButton.innerHTML = "<b>Search results for \"" + sk + "\"</b>";
 	window.location.href = "#top";
 	column1.style.backgroundColor = "#f2cbc1";
-	loadDatabase(1000, sk);
+	loadDatabase(1000, sk, false);
 	document.getElementById("search-in").value = "";
 });
 
@@ -379,7 +381,7 @@ moreButton.addEventListener('click', function () {
 	} else {
 		items += 9;
 
-		loadDatabase(items, "");
+		loadDatabase(items, "", false, quoteTableBody);
 		if (childNum <= items) {
 			//moreButton.innerHTML = "<b>&#x2713; LOAD MORE</b>"
 		}
@@ -614,10 +616,19 @@ LLLLLLLLLLLLLLLLLLLLLLLL     OOOOOOOOO     AAAAAAA                   AAAAAAADDDD
 */
 
 
-function loadDatabase(itemCount, searchkey) {
-	database.ref('quotes').orderByChild('pinned').limitToLast(itemCount).on('value', function (snapshot) {
+function loadDatabase(itemCount, searchkey, pin, tablebody) {
+	database.ref('quotes').orderByChild('pinned').equalTo(pin).limitToLast(itemCount).on('value', function (snapshot) {
 		// Clear existing table rows
-		quoteTableBody.innerHTML = '';
+
+		postHeader = "";
+		if (tablebody === quoteTableBody) {
+			postHeader = "Feed";
+		} else {
+			postHeader = "Pinned Post";
+		}
+
+		tablebody.innerHTML = `<br><span style="text-align: left;font-weight: bold;font-size: 0.9em;">${postHeader}</span>`;
+
 		// Generate new table rows in reverse order
 		var quotes = [];
 		snapshot.forEach(function (childSnapshot) {
@@ -768,7 +779,7 @@ function loadDatabase(itemCount, searchkey) {
 
 			/////////////////////////////////////////////////////////
 
-			quoteTableBody.appendChild(rrow);
+			tablebody.appendChild(rrow);
 
 			rrow.querySelector(`#react-div`).addEventListener("click", function () {
 				reactModal(childData);

@@ -10,6 +10,7 @@ var titleInput = document.querySelector('#title');
 var quoteTextarea = document.querySelector('#quote');
 var authorInput = document.querySelector('#author');
 var quoteTableBody = document.querySelector('#quote-table-body');
+var pinTableBody = document.querySelector('#pin-table-body');
 var postFrom = document.querySelector('#post-form');
 var searchBt = document.querySelector('#search-bt');
 var tbn = document.querySelector('#tbn');
