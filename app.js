@@ -139,11 +139,15 @@ showFormButton.addEventListener('click', function () {
                     <tr>
                         <td style="width: 7%">
                             
-							<div onmouseover="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';
-							this.style.transition='background-color 0.3s ease'" onmouseout="this.style.backgroundColor='transparent';
-							this.style.transition='background-color 0.3s ease'"	style="background-color: transparent; padding: 10px; margin-right: 5px; cursor: pointer; color: #65676b;
-							font-weight: bold;"><img src="Aa_square.png" width="36px" id="toolbar-1">
-							</div>
+						<div 
+						onmousedown="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
+						onmouseup="this.style.backgroundColor='transparent';" 
+						ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
+						ontouchend="this.style.backgroundColor='transparent';" 
+						style="background-color: transparent; padding: 10px; margin-right: 5px; cursor: pointer; color: #65676b; font-weight: bold;">
+						<img src="Aa_square.png" width="36px" id="toolbar-1">
+						 </div>
+					
 
                         </td>
                         <td style="width: 7%">
