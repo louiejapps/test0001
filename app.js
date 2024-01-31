@@ -75,275 +75,10 @@ function resetPage() {
 }
 
 
-/*                                                                                                 
-																								  
-IIIIIIIIIINNNNNNNN        NNNNNNNNPPPPPPPPPPPPPPPPP   UUUUUUUU     UUUUUUUUTTTTTTTTTTTTTTTTTTTTTTT
-I::::::::IN:::::::N       N::::::NP::::::::::::::::P  U::::::U     U::::::UT:::::::::::::::::::::T
-I::::::::IN::::::::N      N::::::NP::::::PPPPPP:::::P U::::::U     U::::::UT:::::::::::::::::::::T
-II::::::IIN:::::::::N     N::::::NPP:::::P     P:::::PUU:::::U     U:::::UUT:::::TT:::::::TT:::::T
-  I::::I  N::::::::::N    N::::::N  P::::P     P:::::P U:::::U     U:::::U TTTTTT  T:::::T  TTTTTT
-  I::::I  N:::::::::::N   N::::::N  P::::P     P:::::P U:::::D     D:::::U         T:::::T        
-  I::::I  N:::::::N::::N  N::::::N  P::::PPPPPP:::::P  U:::::D     D:::::U         T:::::T        
-  I::::I  N::::::N N::::N N::::::N  P:::::::::::::PP   U:::::D     D:::::U         T:::::T        
-  I::::I  N::::::N  N::::N:::::::N  P::::PPPPPPPPP     U:::::D     D:::::U         T:::::T        
-  I::::I  N::::::N   N:::::::::::N  P::::P             U:::::D     D:::::U         T:::::T        
-  I::::I  N::::::N    N::::::::::N  P::::P             U:::::D     D:::::U         T:::::T        
-  I::::I  N::::::N     N:::::::::N  P::::P             U::::::U   U::::::U         T:::::T        
-II::::::IIN::::::N      N::::::::NPP::::::PP           U:::::::UUU:::::::U       TT:::::::TT      
-I::::::::IN::::::N       N:::::::NP::::::::P            UU:::::::::::::UU        T:::::::::T      
-I::::::::IN::::::N        N::::::NP::::::::P              UU:::::::::UU          T:::::::::T      
-IIIIIIIIIINNNNNNNN         NNNNNNNPPPPPPPPPP                UUUUUUUUU            TTTTTTTTTTT
-*/
-
 showFormButton.addEventListener('click', function () {
-	sessionStorage.setItem("link", "?");
-	sessionStorage.setItem("base64", "");
-	rnum = "";
-	var counter = false;
-
-	upflag = false;
-	var modal = document.createElement('div');
-
-
-	let myAuthor = "<big><b style='color:#ed4c2b;'>" + "CREATE POST" + "</b></big>";
-
-
-	let inputtf = "<><div id='thumbnails'></div>";
-	//let imgButton = "<input type='file' id='img-button'>";
-	let imgButton = "<input type='file' id='img-button' onchange='handleImage()' accept='image/*'>";
-
-	let fileButton = "<button class='file-button' id='file-button'>+ ADD FILES</button>";
-	let postButton = "<button class='view-button' id='post-button'>POST</button>";
-	let htmlString = `
-	<table border="0" class="tbn" align="center">
-    <tr>
-        <td style="text-align:left; vertical-align:middle;height: 50;padding:2px;">
-		<span id="yourname" style="color: #C34632; margin-left: 10px;">Anonymous</span>
-        </td>
-
-        <td style="text-align:center; vertical-align:middle; padding:15px;">
-            <label class="toggle-switch">
-                <input type="checkbox" unchecked>
-                <span class="slider"></span>
-            </label>
-        </td>
-    </tr>
-
-    <tr>
-        <td colspan="2" style="">
-            <textarea id='caption' name='caption' maxlength='320' placeholder='Write something...'></textarea>
-            <div id="show-image" class="image-container" style="display:block; height:auto; width:100%">
-				<div id='thumbnails' style="text-align: center;"></div>
-                
-            </div>
-            <div id="toolbar" align="center" style="width:100%;">
-                <table border="0" align="center" style="width:100%;">
-                    <tr>
-                        <td style="width: 7%">
-                            
-						<div 
-						onmousedown="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
-						onmouseup="this.style.backgroundColor='transparent';" 
-						ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
-						ontouchend="this.style.backgroundColor='transparent';" 
-						style="background-color: transparent; padding: 10px; margin-right: 5px; cursor: pointer; color: #65676b; font-weight: bold;">
-						<img src="Aa_square.png" width="36px" id="toolbar-1">
-						 </div>
-					
-
-                        </td>
-                        <td style="width: 7%">
-                            <div>
-                                <img src="photos.png" width="36px" id="toolbar-2">
-                            </div>
-                        </td>
-                        <td style="width: 7%">
-                            <div>
-                                <img src="linkurl.png" width="36px" id="toolbar-3">
-                            </div>
-                        </td>
-                        <td style="width: auto">
-                            <div style="text-align:right;display: none;" id="toolbar-4">
-                                <img src="reset.png" width="35px">
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </td>
-    </tr>
-	</table>
-	`;
-	modal.innerHTML = "<center><div><p>" + myAuthor + "" +
-		"</div></div>" + imgButton + htmlString + postButton + "<div class='close-button'></div>";
-
-	modal.style.position = 'fixed';
-	modal.style.top = '36%';
-	modal.style.left = '50%';
-	//modal.style.width = '90vw';
-	modal.style.height = 'auto';
-	modal.style.transform = 'translate(-50%, -50%)';
-	modal.style.backgroundColor = 'white';
-	modal.style.padding = '20px';
-	modal.style.border = '1px #aaa';
-	modal.style.borderRadius = '10px';
-	modal.style.zIndex = '9999';
-
-	// Define minimum width in pixels
-	const minWidth = 330; // Adjust this value as needed
-
-	// Check if the viewport is in landscape or portrait mode
-	if (window.matchMedia("(orientation: landscape)").matches) {
-		// Landscape mode (desktop)
-		modal.style.width = `max(30%, ${minWidth}px)`;
-	} else {
-		// Portrait mode (mobile devices)
-		modal.style.width = `max(90%, ${minWidth}px)`;
-	}
-
-	var captionArea = modal.querySelector('#caption');
-
-
-	var closeButton = modal.querySelector('.close-button');
-	closeButton.style.cssText = `
-    	position: absolute;
-    	top: 108%;
-    	left: 44%;
-    	font-size: 35px;
-    	cursor: pointer;
-    	background: transparent;
-    	font-size: 35px;
-    	cursor: pointer;`;
-	closeButton.innerHTML = '<div class="circle"><span><big><big>&times;</span></div>';
-
-	closeButton.addEventListener('click', function () {
-		modal.remove();
-		overlay.remove();
-	});
-
-	var overlay = document.createElement('div');
-	overlay.style.cssText = `
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(0, 0, 0, 0.85);
-		z-index: 9998;
-	`;
-
-	let posButton = modal.querySelector('#post-button');
-	posButton.style.cssText = `
-		margin-top: 10px;
-		margin-bottom: 15px;
-		font-weight: bold;
-		border-radius: 15px;
-		width: 100%;
-	`;
-	posButton.disabled = true;
-
-
-
-	let toolbar1 = modal.querySelector('#toolbar-1');
-	let toolbar2 = modal.querySelector('#toolbar-2');
-	let toolbar3 = modal.querySelector('#toolbar-3');
-	let toolbar4 = modal.querySelector('#toolbar-4');
-
-	toolbar1.addEventListener('click', function (event) {
-		rnum = randomNum(0, (gradients.length - 1));
-		captionArea.style.paddingTop = "80px";
-		captionArea.style.paddingBottom = "80px";
-		captionArea.style.fontSize = "1.5rem";
-		captionArea.style.textAlign = "center";
-		captionArea.style.background = gradients[rnum];
-		captionArea.style.textShadow = "2px 2px 4px rgba(0, 0, 0, 0.4)";
-		captionArea.style.color = "#fff";
-		captionArea.style.height = "auto";
-		captionArea.style.height = `${quoteTextarea.scrollHeight + 200}px`;
-		//toolbar4.style.display = 'block';
-		toolbar2.style.display = 'none';
-		toolbar3.style.display = 'none';
-	});
-
-	toolbar2.addEventListener('click', function () {
-		captionArea.style.cssText = `
-		padding-top: "";
-		padding-bottom: "";
-		font-size: "";
-		font-weight: "";
-		text-align: "";
-		background: "";
-		text-shadow: "";
-		color: "";
-		height: 10px;
-	`;
-		selectFile();
-
-	});
-
-	closeButton.addEventListener('click', function () {
-		modal.remove();
-		overlay.remove();
-	});
-
-	// Add modal and overlay to the page
-	document.body.appendChild(modal);
-	document.body.appendChild(overlay);
-
-	//POSTBUTTON
-	//POSTBUTTON
-
-	posButton.addEventListener('click', function () {
-
-		let bkg = "";
-
-		if (rnum === "") {
-			bkg = "";
-		} else {
-			bkg = gradients[rnum];
-		}
-
-		if (sessionStorage.getItem("link") === "?") {
-			if (saveData("?", user, "?", Textarea.value, bkg)) {
-				modal.remove();
-				overlay.remove();
-			}
-		} else {
-			if (saveData(sessionStorage.getItem("link"), user, sessionStorage.getItem("base64"), Textarea.value, null)) {
-				modal.remove();
-				overlay.remove();
-			}
-		}
-	});
-
-	var Textarea = document.querySelector('#caption');
-
-	Textarea.addEventListener('input', function () {
-		// Check if the textarea is not empty
-		if (Textarea.value.trim() !== '') {
-			// Enable the button
-			posButton.disabled = false;
-		} else {
-			// Disable the button if the textarea is empty
-			posButton.disabled = true;
-		}
-	});
+	postModal();
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -383,7 +118,7 @@ moreButton.addEventListener('click', function () {
 
 		loadDatabase(items, "", false, quoteTableBody);
 		if (childNum <= items) {
-			//moreButton.innerHTML = "<b>&#x2713; LOAD MORE</b>"
+			
 		}
 
 	}
@@ -644,21 +379,8 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 		quotes.forEach(function (childData) {
 			var rrow = document.createElement('tr');
 			let divStyle = "";
-			let bkgStyle = "";
-			let borderStyle = "";
-
-			if (childData.pinned) {
-				bkgStyle = "background-color: cornsilk";
-				borderStyle = "orangered";
-			} else {
-				if (childData.views === '0') {
-					bkgStyle = "background-color: cornsilk";
-					borderStyle = "lightgrey";
-				} else {
-					bkgStyle = "background-color: white";
-					borderStyle = "lightgrey";
-				}
-			}
+			let bkgStyle = "background-color: rgba(255, 255, 255, 0.8);";
+			let borderStyle = "lightgrey";
 
 			divStyle = `<td style='padding-top: 7.5px;padding-bottom: 7.5px;'>
 			<div id = 'rdiv' style='${bkgStyle}; padding-top:2.5px; padding-bottom:2.5px; border: solid 0px ${borderStyle};'>`;
@@ -730,7 +452,7 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 				</td>
 			  </tr>
 			  <tr>
-				<td><span style='color:#b0b3b8;word-wrap: break-word;font-size: 12px'>${myTime}</span></td>
+				<td><span style='color:#808080;word-wrap: break-word;font-size: 12px'>${myTime}</span></td>
 			  </tr>
 			</table>`;
 
@@ -781,8 +503,10 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 
 			tablebody.appendChild(rrow);
 
-			rrow.querySelector(`#react-div`).addEventListener("click", function () {
-				reactModal(childData);
+			rrow.querySelector(`#react-div`).addEventListener("click", function (event) {
+				var clickX = event.clientX;
+				var clickY = event.clientY;
+				reactModal(clickX, clickY, childData);
 			});
 
 			rrow.querySelector(`#comment-div`).addEventListener("click", function () {
@@ -903,8 +627,8 @@ function saveData(quote, uname, tbn, caption, background) {
 }
 
 function toggleLike(type, quoteId, username) {
-	var databaseRef = database.ref(`quotes/${quoteId}/react/`);
-	databaseRef.child(username).set(type);
+	var databaseRef = database.ref(`quotes/${quoteId}/react/${username}`);
+	databaseRef.set(type);	
 
 	for (let i = 0; i < reactArr.length; i++) {
 		getReactCount(quoteId, reactArr[i]);
@@ -928,15 +652,13 @@ function getReactCount(quoteId, type) {
 
 function getTotalReact(quoteId, type) {
 	var totalcount = 0;
-	for (let i = 0; i < reactArr.length; i++) {
-		firebase.database().ref(`quotes/${quoteId}/react`).orderByValue().equalTo(reactArr[i]).once('value', function (snapshot) {
+		firebase.database().ref(`quotes/${quoteId}/react`).once('value', function (snapshot) {
 			if (snapshot.exists()) {
-				totalcount = totalcount + snapshot.numChildren();
+				totalcount = snapshot.numChildren();
 			} else {
 
 			}
 		});
-	}
 
 
 	return (totalcount + " • " + "No Comments");
@@ -988,7 +710,7 @@ function getTotalReact3(entryId) {
 			} else if (sortedKeys[i] === "likes") {
 				react = react + "👍";
 			} else if (sortedKeys[i] === "wows") {
-				react = react + "🤩";
+				react = react + "🔥";
 			} else if (sortedKeys[i] === "hahas") {
 				react = react + "😂";
 			} else if (sortedKeys[i] === "frowns") {

@@ -16,6 +16,17 @@
 
 <body>
 
+    <div style="position: relative; cursor: pointer; display: flex; align-items: center;" onclick="toggleEmojiContainer()">
+        Click me
+        <div style="display: none; position: absolute; top: -40px; right: 0; background-color: #fff; border: 1px solid #ccc; border-radius: 5px; padding: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); z-index: 1; white-space: nowrap;" id="emojiContainer">
+            <span style="display: inline-block; margin: 5px; cursor: pointer;" onclick="react('👍')">👍</span>
+            <span style="display: inline-block; margin: 5px; cursor: pointer;" onclick="react('❤️')">❤️</span>
+            <span style="display: inline-block; margin: 5px; cursor: pointer;" onclick="react('😄')">😄</span>
+            <span style="display: inline-block; margin: 5px; cursor: pointer;" onclick="react('😊')">😊</span>
+            <!-- Add more emojis as needed -->
+        </div>
+    </div>
+
     <div id="loading-page" class="loading-page">
         <div class="content-box">
             <div class="fruits-animation-wrapper">
@@ -57,7 +68,9 @@
         </div>
 
 
-        <center><div id="header_notify"></div></center>
+        <center>
+            <div id="header_notify"></div>
+        </center>
 
 
 
@@ -187,8 +200,9 @@
                 <span style="color:white">Engr. Wella Lyn Mateo-Mondero, PECE</span>
                 <br>
                 <br>
-                <a style="color:#bf5456" href="https://dl.acm.org/profile/99659557358">https://dl.acm.org/profile/99659557358</a>
-                
+                <a style="color:#bf5456"
+                    href="https://dl.acm.org/profile/99659557358">https://dl.acm.org/profile/99659557358</a>
+
 
             </h5>
 
@@ -202,10 +216,6 @@
                     </div>
                 </a>
             </div>
-
-
-
-            <!--<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>-->
         </div>
     </div>
 

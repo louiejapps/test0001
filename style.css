@@ -68,7 +68,7 @@ body {
 
 /* Style all table rows except the first one with a pointer cursor and a transition effect */
 .tbF tr {
-    cursor: pointer;
+    cursor: default;
     transition: all .25s ease-in-out;
 }
 
@@ -314,11 +314,14 @@ button[disabled] {
     /* Could be more or less, depending on screen size */
 }
 
-/* Style the horizontal ruler */
+
 hr {
-    border: 1px solid #f1f1f1;
-    margin-bottom: 5px;
-}
+    border: none;
+    height: 1px;
+    /* Set the hr color */
+    
+    background-color: #c2c2c2;  /* Modern Browsers */
+  }
 
 /* The Modal Close Button (x) */
 .close {
@@ -518,7 +521,7 @@ hr {
 }*/
 
 #rdiv {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 6px rgba(44, 44, 44, 0.3);
     border-radius: 10px;
 }
 
