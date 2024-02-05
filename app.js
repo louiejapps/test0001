@@ -20,15 +20,6 @@ window.onload = function () {
 	}, 0);
 }
 
-let user = "";
-const name = "";
-
-let uarray = ["judefrancis", "christian", "jennnn", "laurajane", "raychris", "regner", "merneldawn", "edwardJED"];
-
-var userInput = randomNum(0, (uarray.length - 1));
-
-user = uarray[parseInt(userInput)];
-
 const internetTime = Date.now();
 var items = 10;
 var database = firebase.database();
@@ -36,6 +27,40 @@ var urltext = "";
 var posttext = "";
 var selectedText = "";
 var rnum = "";
+
+
+let user = "";
+const name = "";
+let uarray = ['Frenzo125', 'Fenimaure', 'FindingXY', 'ZzenN', 'Pennyclied30', 'Coolbookkeeper7', 'Jolyows', 'XtreamCH', 'ZzzChizCurlzzZ', 'JellyMuse', 'lystar', '8seven3', 'Bradford', 'Metsuki', 'mjba4w'];
+/*
+var usersRef = database.ref('users');
+
+// Fetch data from the 'users' node
+usersRef.once('value').then(function (snapshot) {
+	snapshot.forEach(function (childSnapshot) {
+		var userData = childSnapshot.val();
+		var username = userData.username;
+		var photo = userData.photo;
+
+		// Add username to the array
+		uarray.push(username);
+
+		// Populate the hashmap with username and corresponding photo URL
+		profileHashMap[username] = photo;
+	});
+
+	var userInput = randomNum(0, (uarray.length - 1));
+	user = uarray[parseInt(userInput)];
+
+}).catch(function (error) {
+	console.error('Error fetching data:', error);
+});
+
+console.log(uarray);
+*/
+
+var userInput = randomNum(0, (uarray.length - 1));
+user = uarray[parseInt(userInput)];
 
 localStorage.setItem("data", internetTime);
 sessionStorage.setItem("link", "?");
@@ -49,12 +74,15 @@ headerImage.src = imageHeader;
 //previewImage.src = imageURL;
 
 var childNum = 0;
-document.title = "Liszt | " + user;
+
+
 loadDatabase(items, "", true, pinTableBody);
 loadDatabase(items, "", false, quoteTableBody);
 
 
 const reactArr = ["loves", "likes", "wows", "hahas", "frowns", "dislikes"];
+
+// Reference to the 'users' node in your database
 
 
 database.ref('quotes').once('value')
@@ -118,7 +146,7 @@ moreButton.addEventListener('click', function () {
 
 		loadDatabase(items, "", false, quoteTableBody);
 		if (childNum <= items) {
-			
+
 		}
 
 	}
@@ -318,7 +346,7 @@ function handleImage() {
 				ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
 				// Get base64 representation
-				const base64 = canvas.toDataURL('image/jpeg', 0.4); // Adjust the format as needed
+				const base64 = canvas.toDataURL('image/webp', 0.5); // Adjust the format as needed
 
 				// Log or use the base64 string
 				//console.log("Base64 Image:", base64);
@@ -352,8 +380,18 @@ LLLLLLLLLLLLLLLLLLLLLLLL     OOOOOOOOO     AAAAAAA                   AAAAAAADDDD
 
 
 function loadDatabase(itemCount, searchkey, pin, tablebody) {
-	database.ref('quotes').orderByChild('pinned').equalTo(pin).limitToLast(itemCount).on('value', function (snapshot) {
-		// Clear existing table rows
+
+	let dbRef = "";
+	if (searchkey === "") {
+		dbRef = database.ref('quotes').orderByChild('pinned').equalTo(pin).limitToLast(itemCount);
+	} else {
+		dbRef = database.ref('quotes').orderByChild('timestamp').limitToLast(itemCount);
+	}
+
+	
+	  
+	dbRef.on('value', function (snapshot) {
+		// Clear existing table rows  
 
 		postHeader = "";
 		if (tablebody === quoteTableBody) {
@@ -388,17 +426,6 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 			let myAuthor = "";
 			let indicator = "";
 			let userSpan = `<span style="color: #de3c35;font-size:0.8em;font-weight:bold;">${childData.uname} </span>`;
-
-			if (childData.pinned) {
-				indicator = `<span class="pin-label" style="font-size:0.6em">📌PINNED POST</span>`;
-			} else {
-				if (getTimeDiff(childData.timestamp) <= 0.5) {
-					indicator = ``;
-				} else {
-					indicator = ``;
-				}
-			}
-
 			myAuthor = `${userSpan} ${indicator}`;
 
 
@@ -433,41 +460,85 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 					if (childData.caption === "") {
 						myCaption = "";
 					} else {
-						myCaption = "<section style='white-space: pre-line;text-align:center; font-size:16px; word-wrap:break-word;padding:0px;'>" + childData.caption + "</section>";
+						myCaption = "<section style='white-space: pre-line;text-align:center; font-size:0.9em; font-weight:bold; word-wrap:break-word;padding:2.5px;'>" + childData.caption + "</section>";
 					}
 				}
 
 			}
 			let myTime = getTimeString(childData.timestamp);
 
+			let dotsMenu = "";
+
+			if (!childData.pinned) {
+				dotsMenu = `
+				<!-- Icons section -->
+				<div id="menu-options" class="button-div" style="margin-right:10px">
+					<svg width="16" height="16" fill="currentColor"
+						class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+						<path
+							d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+					</svg>
+				</div>
+				`
+			} else {
+				dotsMenu = `
+				<!-- Icons section -->
+				<div id="menu-options" class="button-div" style="margin-right:10px">
+				<svg width="16" height="16" fill="currentColor" class="bi bi-pin-fill" viewBox="0 0 16 16">
+				<path d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A6 6 0 0 1 5 6.708V2.277a3 3 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354" style="fill: #C34632"/>
+			</svg>
+			
+				</div>
+				`
+			}
+
 			/////////////////////////////////////////////////////////
 			var tableHTML = `
-			<table style='margin:7px'>
-			  <tr>
-				<td rowspan='2' style='text-align:center;'>
-					<img src='${profileHashMap[childData.uname]}' alt='Profile Image' width='32' style='border-radius: 50%;'>
-				</td>
-				<td>
-					<span style='color:#ed4c2b;font-size: 18px'>${myAuthor}</span>
-				</td>
-			  </tr>
-			  <tr>
-				<td><span style='color:#808080;word-wrap: break-word;font-size: 12px'>${myTime}</span></td>
-			  </tr>
-			</table>`;
+			<div style="display: flex; width: 100%; justify-content: space-between; align-items: center; padding: 5px;">
+
+			<div>
+				<table style='margin:7px'>
+					<tr>
+						<td rowspan='2' style='text-align:center;'>
+							<img src='${profileHashMap[childData.uname]}' alt='Profile Image' width='32'
+								style='border-radius: 50%;'>
+						</td>
+						<td>
+							<span style='color:#ed4c2b;font-size: 18px'>${myAuthor}</span>
+						</td>
+					</tr>
+					<tr>
+						<td><span style='color:#808080;word-wrap: break-word;font-size: 12px'>${myTime}</span></td>
+					</tr>
+				</table>
+			</div>
+	
+${dotsMenu}
+		</div>
+			`;
+
+			const reactionMap = {
+				loves: getReactCount(childData.key, "loves"),
+				likes: getReactCount(childData.key, "likes"),
+				wows: getReactCount(childData.key, "wows"),
+				hahas: getReactCount(childData.key, "hahas"),
+				frowns: getReactCount(childData.key, "frowns"),
+				dislikes: getReactCount(childData.key, "dislikes"),
+				views: 1,
+				comments: 1
+			  };
 
 			let rowData = `
 			${divStyle}
 			${tableHTML}
 			${myQuote}
 			${myCaption}
-			<span style='color:#808080; font-size: 14px;'>
-			<hr>${myViews}
-			</span>
-			<br>
-			<span style='color:#008ba3; font-size: 14px;'>&nbsp;&nbsp;${getTotalReact(childData.key)}</span>
-				<br>
-			<div style='height:auto'>
+
+			<hr>
+			
+			${generateReactionHTML(reactionMap)}
+			
+			<div style='height:auto; margin-top:5px'>
 
 				<span style="color: #008ba3; font-size: 0.7em; display: flex; align-items: center;">
 
@@ -478,17 +549,30 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 							ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
 							ontouchend="this.style.backgroundColor='transparent';" 
 							style="background-color: transparent; padding: 10px; margin-right: 5px; cursor: pointer; color: #65676b;
-							font-weight: bold;">😊React</div>
+							font-weight: bold; vertical-align: middle;">
+								<svg width="16" height="16" viewBox="0 0 32 32" fill="none"  style="vertical-align: middle;"xmlns="http://www.w3.org/2000/svg">
+									<path d="M5.99987 6.00001C10.6646 3.66763 14.4999 6.50001 15.9999 8.50001C17.4999 6.5 21.3351 3.66763 25.9999 6.00001C31.9999 8.99999 30.4998 16.5 25.9998 21C23.8041 23.1958 19.9371 27.0628 17.1087 29.2137C16.4552 29.7106 15.5614 29.6884 14.9226 29.1728C12.3299 27.08 8.16491 23.165 5.99987 21C1.49986 16.5 -0.000126839 8.99999 5.99987 6.00001Z" fill="#F8312F"/>
+									<path d="M15.9998 8.49998V11.5492C17.2695 8.86501 20.4252 5.28051 25.6578 5.83746C21.1482 3.80623 17.463 6.54908 15.9998 8.49998Z" fill="#CA0B4A"/>
+									<path d="M11.9456 5.53691C10.2614 4.95005 8.22499 4.88745 5.99987 6.00001C-0.000126839 8.99999 1.49986 16.5 5.99987 21C8.16491 23.165 12.3299 27.08 14.9226 29.1728C15.5614 29.6884 16.4552 29.7106 17.1087 29.2137C17.3629 29.0204 17.6255 28.8132 17.8945 28.5946C15.0398 26.4524 11.0335 23.0762 8.85898 21.1325C3.90218 16.702 2.24993 9.31788 8.85898 6.36425C9.93279 5.88435 10.9667 5.62654 11.9456 5.53691Z" fill="#CA0B4A"/>
+									<ellipse cx="23.4771" cy="12.5937" rx="2.83554" ry="4.78125" transform="rotate(30 23.4771 12.5937)" fill="#F37366"/>
+								</svg>
+									React</div>
 					</span>
 			
-					<span style="width: 100%; display: inline-block; text-align: center;">
+					<span style="width: 100%; display: inline-block; text-align: center; vertical-align: middle; ">					
 							<div id="comment-div" onmouseover="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';
 							this.style.transition='background-color 0.3s ease'" onmouseout="this.style.backgroundColor='transparent';
 							this.style.transition='background-color 0.3s ease'"
 							ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
 							ontouchend="this.style.backgroundColor='transparent';" 
 							style="background-color: transparent; padding: 10px; cursor: pointer; color: #65676b;
-							font-weight: bold;">🗨️Comment</div>
+							font-weight: bold; vertical-align: middle;">
+								<svg width="16" height="16" viewBox="0 0 32 32" fill="none"  style="vertical-align: middle;"xmlns="http://www.w3.org/2000/svg">
+									<path d="M16.0278 4C8.16615 4 3.53108 9.75575 1.66714 12.7026C0.772249 14.1175 0.772247 15.8825 1.66714 17.2974C3.53108 20.2442 8.16615 26 16.0278 26C17.2577 26 18.413 25.8582 19.4936 25.6063L23.8434 27.8365C24.8416 28.3483 26.0278 27.6235 26.0278 26.5017V22.3015C28.083 20.6044 29.5201 18.6702 30.3884 17.2974C31.2833 15.8825 31.2833 14.1175 30.3884 12.7026C28.5245 9.75575 23.8894 4 16.0278 4Z" fill="#9B9B9B"/>
+									<path d="M24.2997 26.9467L19.6172 24.5458C18.5104 24.8344 17.3146 25 16.0278 25C8.70189 25 4.32778 19.6331 2.51227 16.7628C1.82387 15.6744 1.82387 14.3256 2.51228 13.2372C4.32778 10.3669 8.7019 5 16.0278 5C23.3537 5 27.7278 10.3669 29.5433 13.2372C30.2317 14.3256 30.2317 15.6744 29.5433 16.7628C28.6595 18.16 27.1695 20.1489 25.0278 21.8222V26.5017C25.0278 26.8757 24.6324 27.1173 24.2997 26.9467Z" fill="white"/>
+								</svg>
+									Comment
+							</div>
 					</span>
 		
 				</span>
@@ -503,6 +587,12 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 
 			tablebody.appendChild(rrow);
 
+			rrow.querySelector(`#menu-options`).addEventListener("click", function (event) {
+				var clickX = event.clientX;
+				var clickY = event.clientY;
+				menuModal(clickX, clickY, childData);
+			});
+
 			rrow.querySelector(`#react-div`).addEventListener("click", function (event) {
 				var clickX = event.clientX;
 				var clickY = event.clientY;
@@ -512,6 +602,7 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 			rrow.querySelector(`#comment-div`).addEventListener("click", function () {
 				commentModal(childData);
 			});
+			document.title = "Liszt | " + user;
 
 			loading.style.display = 'none';
 
@@ -627,41 +718,113 @@ function saveData(quote, uname, tbn, caption, background) {
 }
 
 function toggleLike(type, quoteId, username) {
-	var databaseRef = database.ref(`quotes/${quoteId}/react/${username}`);
-	databaseRef.set(type);	
-
 	for (let i = 0; i < reactArr.length; i++) {
-		getReactCount(quoteId, reactArr[i]);
+		document.getElementById(`${reactArr[i]}`).style.fontSize = `1em`;
+	}
+	
+	var databaseRef = database.ref(`quotes/${quoteId}/react/${username}`);
+	if (type === "") {
+		databaseRef.remove();
+	} else {
+		databaseRef.set(type);		
+		const element = document.getElementById(`${type}`);
+		
+		if(element){
+			element.style.fontSize = `2em`;
+		}
+		
 	}
 }
 
 function getReactCount(quoteId, type) {
-
+	
+	var itemCount = 0;
 	firebase.database().ref(`quotes/${quoteId}/react`).orderByValue().equalTo(type).once('value', function (snapshot) {
-		var itemCount = 0;
+		
 		if (snapshot.exists()) {
 			itemCount = snapshot.numChildren();
-			updatelike(type, itemCount);
+			console.log(itemCount);
 		} else {
 			itemCount = 0;
 		}
-		updatelike(type, itemCount);
+		//updatelike(type, itemCount);
 	});
-
+	
+	//console.log(itemCount);
+	return itemCount;
 }
 
-function getTotalReact(quoteId, type) {
+
+function generateReactionHTML(reactionMap) {
+	// Sort the reactionMap in descending order based on counts
+	const sortedReactions = Object.entries(reactionMap)
+	  .sort(([, countA], [, countB]) => countB - countA)
+	  .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
+  
+	// Generate HTML based on sortedReactions
+	const htmlString = `
+	  <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px; margin: 5px; background-color: transparent;">
+  
+		  <div style="display: flex; gap: 0px; align-items: center; font-family: 'Arial', sans-serif; font-size: 0.7em; color: #333;">
+
+			  ${Object.entries(sortedReactions)
+				.filter(([reaction, count]) => count > 0 && reaction !== 'comments' && reaction !== 'views')
+				.map(([reaction, count]) => `
+				  <div style="display: flex; align-items: center; padding: 4px; border: 1px solid #ccc; border-radius: 5px; background-color: #fff; margin-right: 5px;">
+					  ${getEmoji(reaction)}
+					  <div style="margin-left: 3px; font-weight: bold;">${count}</div>
+				  </div>
+				`).join('')}
+		  </div>
+  
+		  <div style="display: flex; gap: 0px; align-items: center; font-family: 'Arial', sans-serif; font-size: 0.7em; color: #333;">
+			  <div style="display: flex; align-items: center; margin-right: 5px; padding: 4px; border: 1px solid #ccc; border-radius: 5px; background-color: #fff;">
+			  <svg width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+			  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+			  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+			</svg>
+				  <div style="margin-left: 3px; font-weight: bold;">${reactionMap.views || 0}</div>
+			  </div>
+  
+			  <div style="display: flex; align-items: center; padding: 4px; border: 1px solid #ccc; border-radius: 5px; background-color: #fff;">
+			  <svg width="16" height="16" fill="currentColor" class="bi bi-chat-right" viewBox="0 0 16 16">
+			  <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/>
+			</svg>
+				  <div style="margin-left: 5px; font-weight: bold;">${reactionMap.comments || 0}</div>
+			  </div>
+		  </div>
+  
+	  </div>
+	`;
+  
+	// Helper function to get emoji based on reaction key
+	function getEmoji(reaction) {
+	  const emojiMap = {
+		loves: '❤️',
+		likes: '👍',
+		wows: '🔥',
+		hahas: '😂',
+		frowns: '😥',
+		dislikes: '👎'
+	  };
+	  return emojiMap[reaction];
+	}
+  
+	return htmlString;
+  }
+  
+function getTotalReact(quoteId) {
 	var totalcount = 0;
-		firebase.database().ref(`quotes/${quoteId}/react`).once('value', function (snapshot) {
-			if (snapshot.exists()) {
-				totalcount = snapshot.numChildren();
-			} else {
+	firebase.database().ref(`quotes/${quoteId}/react`).once('value', function (snapshot) {
+		if (snapshot.exists()) {
+			totalcount = snapshot.numChildren();
+		} else {
 
-			}
-		});
+		}
+	});
 
 
-	return (totalcount + " • " + "No Comments");
+	return (totalcount);
 }
 
 function updatelike(type, itemcount) {
@@ -682,61 +845,7 @@ function togglePin(quoteId) {
 	database.ref(`quotes/${quoteId}/pinned`).transaction(currentLike => !currentLike);
 }
 
-function getTotalReact3(entryId) {
-	let react = String();
-	let myHashMap = {};
 
-	for (let i = 0; i < reactArr.length; i++) {
-		getReactCount(entryId, reactArr[i]);
-	}
-
-	for (let i = 0; i < reactArr.length; i++) {
-		myHashMap[reactArr[i]] = parseInt(sessionStorage.getItem(reactArr[i]), 10);
-	}
-
-	let keyValueArray = Object.entries(myHashMap);
-	// Sort the array based on the values in descending order
-	keyValueArray.sort((a, b) => b[1] - a[1]);
-
-	// Extract the sorted keys
-	let sortedKeys = keyValueArray.map(pair => pair[0]);
-
-	for (let i = 0; i < sortedKeys.length; i++) {
-		if (myHashMap[sortedKeys[i]] === 0) {
-			react = react + "";
-		} else {
-			if (sortedKeys[i] === "loves") {
-				react = react + "❤️";
-			} else if (sortedKeys[i] === "likes") {
-				react = react + "👍";
-			} else if (sortedKeys[i] === "wows") {
-				react = react + "🔥";
-			} else if (sortedKeys[i] === "hahas") {
-				react = react + "😂";
-			} else if (sortedKeys[i] === "frowns") {
-				react = react + "😥";
-			} else if (sortedKeys[i] === "dislikes") {
-				react = react + "👎";
-			} else {
-
-			}
-		}
-	}
-
-	let totalValue = 0;
-
-	for (let key in myHashMap) {
-		if (myHashMap.hasOwnProperty(key)) {
-			totalValue += myHashMap[key];
-		}
-	}
-
-	if (totalValue === 0) {
-		return ("");
-	} else {
-		return (react + "" + totalValue + " • " + "No Comments");
-	}
-}
 
 function setComment(key, username, message) {
 
@@ -774,7 +883,7 @@ function loadComments(key, commentTB) {
 			<table border="0" style="border-collapse: collapse; width: 100%;">
 			<tr>
 				<td style="width: 25; height: 25px; padding: 1px; text-align: center;">
-					<img src=${profileHashMap[commentData.username]} alt='Profile Image' width='32' style='border-radius: 50%;'>
+					<img src='${profileHashMap[commentData.username]}' alt='Profile Image' width='32' style='border-radius: 50%;'>
 				</td>
 				<td style="padding: 1px; text-align: center;">
 					<div style="max-width: 310px; height: auto; background-color: #ffffff; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -794,4 +903,3 @@ function loadComments(key, commentTB) {
 		commentTB.appendChild(crow);
 	});
 }
-
