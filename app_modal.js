@@ -35,7 +35,8 @@ function postModal() {
 				<table border="0" align="center" style="width:100%;">
 					<tr>
 						<td style="width: 7%">
-						<div class="button-div">
+						<div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
+						ontouchend="this.style.backgroundColor='transparent';">
 							<img src="Aa_square.png" width="36px" id="toolbar-1">
 						</div>
 						</td>
@@ -47,7 +48,8 @@ function postModal() {
 						</td>
 	
 						<td style="width: 7%">
-						<div class="button-div">
+						<div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
+						ontouchend="this.style.backgroundColor='transparent';">
 							<img src="linkurl.png" width="36px" id="toolbar-3">
 						</div>
 						</td>
@@ -401,28 +403,47 @@ function reactModal(clickX, clickY, childData) {
 	let pButton = "<a class='pin-button'>&nbsp; Pin Post &nbsp;</a>";
 
 	let rButton = `
-	<table border='0' id='reactTable'>
-	  <tr>
-	  <td><div class="button-div"><span id='loves' style='font-size: 1em; font-weight: bold; color: red;' onclick='toggleLike("loves", "${childData.key}", "${user}")'>❤️</span><br></div></td>
-	  <td><div class="button-div"><span id='likes' style='font-size: 1em; font-weight: bold; color: red;' onclick='toggleLike("likes", "${childData.key}", "${user}")'>👍</span></div></td>
-	  <td><div class="button-div"><span id='wows' style='font-size: 1em; font-weight: bold; color: red;' onclick='toggleLike("wows", "${childData.key}", "${user}")'>🔥</span></div></td>
-	  <td><div class="button-div"><span id='hahas' style='font-size: 1em; font-weight: bold; color: red;' onclick='toggleLike("hahas", "${childData.key}", "${user}")'>😂</span></div></td>
-	  <td><div class="button-div"><span id='frowns' style='font-size: 1em; font-weight: bold; color: red;' onclick='toggleLike("frowns", "${childData.key}", "${user}")'>😥</span></div></td>
-	  <td><div class="button-div"><span id='dislikes' style='font-size: 1em; font-weight: bold; color: red;' onclick='toggleLike("dislikes", "${childData.key}", "${user}")'>👎</span></div></td>
-	  </tr>
-	</table>`;
-
-	let rButto2n = `
-	<table border='0' id='reactTable'>
-	  <tr>
-	  <td><div class="button-div"><span onclick='toggleLike("loves", "${childData.key}", "${user}")'>❤️</span><br><span id='loves' style='font-size: 0.45em; font-weight: bold; color: red;'></span></div></td>
-	  <td><div class="button-div"><span onclick='toggleLike("likes", "${childData.key}", "${user}")'>👍</span><br><span id='likes' style='font-size:  0.45em; font-weight: bold; color: red;'></span></div></td>
-	  <td><div class="button-div"><span onclick='toggleLike("wows", "${childData.key}", "${user}")'>🔥</span><br><span id='wows' style='font-size:  0.45em; font-weight: bold;  color: red;'></span></div></td>
-	  <td><div class="button-div"><span onclick='toggleLike("hahas", "${childData.key}", "${user}")'>😂</span><br><span id='hahas' style='font-size:  0.45em; font-weight: bold;  color: red;'></span></div></td>
-	  <td><div class="button-div"><span onclick='toggleLike("frowns", "${childData.key}", "${user}")'>😥</span><br><span id='frowns' style='font-size:  0.45em; font-weight: bold;  color: red;'></span></div></td>
-	  <td><div class="button-div"><span onclick='toggleLike("dislikes", "${childData.key}", "${user}")'>👎</span><br><span id='dislikes' style='font-size:  0.45em; font-weight: bold;  color: red;'></span></div></td>
-	  </tr>
-	</table>`;
+    <table border='0' id='reactTable'>
+        <tr>
+            <td>
+                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                    ontouchend="this.style.backgroundColor='transparent';"><span id='loves'
+                        style='font-size: 1em; font-weight: bold; color: red;'
+                        onclick='toggleLike("loves", "${childData.key}", "${user}")'>❤️</span><br></div>
+            </td>
+            <td>
+                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                    ontouchend="this.style.backgroundColor='transparent';"><span id='likes'
+                        style='font-size: 1em; font-weight: bold; color: red;'
+                        onclick='toggleLike("likes", "${childData.key}", "${user}")'>👍</span></div>
+            </td>
+            <td>
+                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                    ontouchend="this.style.backgroundColor='transparent';"><span id='wows'
+                        style='font-size: 1em; font-weight: bold; color: red;'
+                        onclick='toggleLike("wows", "${childData.key}", "${user}")'>🔥</span></div>
+            </td>
+            <td>
+                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                    ontouchend="this.style.backgroundColor='transparent';"><span id='hahas'
+                        style='font-size: 1em; font-weight: bold; color: red;'
+                        onclick='toggleLike("hahas", "${childData.key}", "${user}")'>😂</span></div>
+            </td>
+            <td>
+                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                    ontouchend="this.style.backgroundColor='transparent';"><span id='frowns'
+                        style='font-size: 1em; font-weight: bold; color: red;'
+                        onclick='toggleLike("frowns", "${childData.key}", "${user}")'>😥</span></div>
+            </td>
+            <td>
+                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                    ontouchend="this.style.backgroundColor='transparent';"><span id='dislikes'
+                        style='font-size: 1em; font-weight: bold; color: red;'
+                        onclick='toggleLike("dislikes", "${childData.key}", "${user}")'>👎</span></div>
+            </td>
+        </tr>
+    </table>	
+	`;
 
 	modal.innerHTML = `<div style="text-align:center">${rButton}
 		<a class='remove-button'>Remove</a>
@@ -522,10 +543,21 @@ function menuModal(clickX, clickY, childData) {
 	var counter = false;
 	var modal = document.createElement('div');
 	let rButton = `
-	<div id="del-post" class="button-div" style="padding:7.5px"><span id="delpost-span" style="color: #C34632; font-size:1.3em">Delete Post</span></div>
-	<div id="pin-post" class="button-div" style="padding:7.5px"><span id="pinpost-span" style="color: #000; padding:10px; font-size:1.3em">Pin Post </span></div>
-	<div id="rep-post"class="button-div" style="padding:7.5px"><span style="color: #000; padding:10px; font-size:1.3em">Report </span></div>
-	
+    <div id="del-post" class="button-div" style="padding:7.5px"
+        ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+        ontouchend="this.style.backgroundColor='transparent';">
+        <span id="delpost-span" style="color: #C34632; font-size:1.3em">Delete Post</span>
+    </div>
+    <div id="pin-post" class="button-div" style="padding:7.5px"
+        ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+        ontouchend="this.style.backgroundColor='transparent';">
+        <span id="pinpost-span" style="color: #000; padding:10px; font-size:1.3em">Pin Post </span>
+    </div>
+    <div id="rep-post" class="button-div" style="padding:7.5px"
+        ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+        ontouchend="this.style.backgroundColor='transparent';">
+        <span style="color: #000; padding:10px; font-size:1.3em">Report </span>
+    </div>
 	`;
 
 	modal.innerHTML = `<div style="text-align:center">${rButton}

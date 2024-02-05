@@ -472,7 +472,8 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 			if (!childData.pinned) {
 				dotsMenu = `
 				<!-- Icons section -->
-				<div id="menu-options" class="button-div" style="margin-right:10px">
+				<div id="menu-options" class="button-div" style="margin-right:10px" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
+				ontouchend="this.style.backgroundColor='transparent';">
 					<svg width="16" height="16" fill="currentColor"
 						class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
 						<path
@@ -765,7 +766,7 @@ function generateReactionHTML(reactionMap) {
 	const htmlString = `
 	  <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px; margin: 5px; background-color: transparent;">
   
-		  <div style="display: flex; gap: 0px; align-items: center; font-family: 'Arial', sans-serif; font-size: 0.7em; color: #333;">
+		  <div style="display: flex; gap: 0px; align-items: center; font-family: 'Arial', sans-serif; font-size: 12px; color: #333;">
 
 			  ${Object.entries(sortedReactions)
 				.filter(([reaction, count]) => count > 0 && reaction !== 'comments' && reaction !== 'views')
@@ -777,7 +778,7 @@ function generateReactionHTML(reactionMap) {
 				`).join('')}
 		  </div>
   
-		  <div style="display: flex; gap: 0px; align-items: center; font-family: 'Arial', sans-serif; font-size: 0.7em; color: #333;">
+		  <div style="display: flex; gap: 0px; align-items: center; font-family: 'Arial', sans-serif; font-size: 12px; color: #333;">
 			  <div style="display: flex; align-items: center; margin-right: 5px; padding: 4px; border: 1px solid #ccc; border-radius: 5px; background-color: #fff;">
 			  <svg width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
 			  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
