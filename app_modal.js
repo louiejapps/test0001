@@ -234,44 +234,85 @@ function postModal() {
 function commentModal(childData) {
 
 	event.preventDefault();
-
-	selectedText = "";
-
 	var counter = false;
 	var modal = document.createElement('div');
 
 	let vButton = `<div class="img-container">
     				<img class="view-button" src="${childData.thumbnail}" alt="Description of the image">
 				</div>`;
-	let scaption = `<span style='white-space: pre-line;text-align:center; font-size:0.9em; font-weight:bold; word-wrap:break-word;margin:2.5px'; >${childData.caption}</span>`;
+
+	let scaption = "";
+	if (childData.thumbnail === "?") {
+	
+			let myBackground = "";
+
+			let fontSize = (childData.caption.length < 160) ? "font-size:1.4em" : "font-size:1.2em";
+
+
+			if (childData.background === "") {
+				myBackground = "" + ";white-space: pre-line;text-align:center; color: #444; font-weight: normal;word-wrap:break-word;padding:10px;font-size:1.3em'"
+			} else {
+				myBackground = childData.background + ";text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); " + 
+				"color: #fff;white-space: pre-line;text-align:center; font-weight: bold;" + fontSize + "; word-wrap:break-word;padding:75px; font-family: sans-serif'";
+			}
+
+
+
+			scaption = "<p style='background:" + myBackground + ">" + childData.caption + "</p>";
+
+
+	}else{
+		scaption = `
+		<span id='span-caption' style='text-align:center; font-size:1.1em; color: #444;font-weight:bold; word-wrap:break-word;margin:2.5px'; >
+		${childData.caption}
+		</span>`;
+	}
 
 	modal.innerHTML = `<center><div>
 
-
 		</div></div>
 		${vButton}
-		<section style="color: #5a5a5a; font-size: 0.8em; font-weight: bold;  background-color: #f5f5f5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); text-align: center; cursor: pointer;">VIEW HIGH QUALITY</section>
+		<section id="view-HD-button" style="color: #5a5a5a; font-size: 0.8em; font-weight: bold;  background-color: #f5f5f5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); text-align: center; cursor: pointer;">VIEW HIGH QUALITY</section>
 		<br>
 		${scaption}
-
-		<div style="max-height: 200px; width=100%; margin-top:7.5px; overflow-y: scroll;">
-			<table id="comment-table" class="tbF" align="center">
-				<tbody id="comment-tb"></tbody>
-			</table>
-		</div>
-		<div style="display: flex; align-items: center;">
-		<input id="comment-input"
-			type="text" style="width: calc(70% - 25px); padding: 10px; margin-top: 5px; border: 1px solid #cccccc; border-radius: 5px;" maxlength='140' placeholder="Write a comment...">
-		
-		<button id="comment-send2"
-			style="width: 50px; margin-top: 5px; margin-left: 5px; padding: 10px; background-color: #4CAF50; color: #ffffff; border: none; border-radius: 5px; cursor: pointer;">☺️
-		</button>
+		<div style="max-height: 150px; width=100%; margin-top:7.5px; overflow-y: scroll;">
+        <table id="comment-table" class="tbF" align="center">
+            <tbody id="comment-tb"></tbody>
+        </table>
+    </div>
 	
-		<button id="comment-send"
-			style="width: 50px; margin-top: 5px; margin-left: 5px; padding: 10px; background-color: #4CAF50; color: #ffffff; border: none; border-radius: 5px; cursor: pointer;">▶
-		</button>
-	</div>					
-	<div class='close-button'></div>
+    <div style="display: flex; align-items: center;">
+        <div style="position: relative; width: calc(100%); margin-top: 5px;">
+            <input id="comment-input" type="text"
+                style="width: 100%; padding: 10px; padding-right: 70px;  border: 1px solid #cccccc; border-radius: 5px;"
+                maxlength='140' placeholder="Write a comment...">
+
+            <div id="comment-send2" class="button-div"
+                ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                ontouchend="this.style.backgroundColor='transparent';"
+                style="position: absolute; top: 50%; right: 35px; transform: translateY(-50%); padding: 7px;">
+                <svg width="16" height="16" fill="currentColor" style="vertical-align: middle; text-align: center;"
+                    class="bi bi-emoji-smile" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                        d="M4.285 9.567a.5.5 0 0 1 .683.183A3.5 3.5 0 0 0 8 11.5a3.5 3.5 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5" />
+                </svg>
+            </div>
+
+            <div id="comment-send" class="button-div"
+                ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                ontouchend="this.style.backgroundColor='transparent';"
+                style="position: absolute; top: 50%; right: 5px; transform: translateY(-50%); padding: 7px;">
+                <svg width="16" height="16" fill="currentColor" class="bi bi-send"
+                    style="text-align: center; vertical-align: middle;" viewBox="0 0 16 16">
+                    <path
+                        d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class='close-button'></div>
+
 	
 `;
 
@@ -293,10 +334,10 @@ function commentModal(childData) {
 	// Check if the viewport is in landscape or portrait mode
 	if (window.matchMedia("(orientation: landscape)").matches) {
 		// Landscape mode (desktop)
-		modal.style.width = `400px`;
+		modal.style.width = `430px`;
 	} else {
 		// Portrait mode (mobile devices)
-		modal.style.width = `330px`;
+		modal.style.width = `335px`;
 	}
 
 
@@ -329,6 +370,7 @@ function commentModal(childData) {
 
 	var viewButton = modal.querySelector('.view-button');
 	var imgContainer = modal.querySelector('.img-container'); // Make sure to add a class 'container' to your container div
+	var viewHDButton = modal.querySelector('#view-hd-button');
 
 	viewButton.style.marginTop = '5px';
 	viewButton.style.marginBottom = '5px';
@@ -342,10 +384,18 @@ function commentModal(childData) {
 	imgContainer.style.height = '200px'; // Set the height of your container
 	imgContainer.style.marginTop = '5px';
 	imgContainer.style.marginBottom = '5px';
-	imgContainer.style.overflow = 'hidden'; // Ensure content outside the container is hidden
+	imgContainer.style.overflow = 'hidden'; // Ensure content outside the container is 
 
+	if (childData.thumbnail === "?") {
+		imgContainer.style.display = `none`;
+		viewHDButton.style.display = `none`;
+	}
 
-	viewButton.addEventListener('click', function () {
+	if(childData.caption === ""){
+		modal.querySelector('#span-caption').style.display = `none`;
+	}
+
+	viewHDButton.addEventListener('click', function () {
 		openLink(childData.quote);
 		modal.remove();
 		overlay.remove();
@@ -368,6 +418,7 @@ function commentModal(childData) {
 	commentSend.addEventListener('click', function () {
 		setComment(childData.key, user, commentInput.value);
 		loadComments(childData.key, commentTB);
+		commentInput.value = "";
 	});
 
 	document.body.appendChild(modal);
@@ -387,14 +438,12 @@ function commentModal(childData) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function reactModal(clickX, clickY, childData) {
-	event.preventDefault();
+	//event.preventDefault();
 	/*database.ref('quotes/' + childData.key).update({
 		views: eval(childData.views) + eval(1)
 	});*/
 
 	// Create modal with delete button and close button
-
-	selectedText = "";
 
 	var counter = false;
 	var modal = document.createElement('div');
@@ -406,44 +455,40 @@ function reactModal(clickX, clickY, childData) {
     <table border='0' id='reactTable'>
         <tr>
             <td>
-                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                <div id="c-loves" class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
                     ontouchend="this.style.backgroundColor='transparent';"><span id='loves'
-                        style='font-size: 1em; font-weight: bold; color: red;'
-                        onclick='toggleLike("loves", "${childData.key}", "${user}")'>❤️</span><br></div>
+                        style='font-size: 1em; font-weight: bold; color: red;'>❤️</span><br></div>
             </td>
             <td>
-                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                <div id="c-likes" class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
                     ontouchend="this.style.backgroundColor='transparent';"><span id='likes'
-                        style='font-size: 1em; font-weight: bold; color: red;'
-                        onclick='toggleLike("likes", "${childData.key}", "${user}")'>👍</span></div>
+                        style='font-size: 1em; font-weight: bold; color: red;'>👍</span></div>
             </td>
             <td>
-                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                <div id="c-wows" class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
                     ontouchend="this.style.backgroundColor='transparent';"><span id='wows'
-                        style='font-size: 1em; font-weight: bold; color: red;'
-                        onclick='toggleLike("wows", "${childData.key}", "${user}")'>🔥</span></div>
+                        style='font-size: 1em; font-weight: bold; color: red;'>🔥</span></div>
             </td>
             <td>
-                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                <div id="c-hahas" class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
                     ontouchend="this.style.backgroundColor='transparent';"><span id='hahas'
-                        style='font-size: 1em; font-weight: bold; color: red;'
-                        onclick='toggleLike("hahas", "${childData.key}", "${user}")'>😂</span></div>
+                        style='font-size: 1em; font-weight: bold; color: red;'>😂</span></div>
             </td>
             <td>
-                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                <div id="c-frowns" class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
                     ontouchend="this.style.backgroundColor='transparent';"><span id='frowns'
-                        style='font-size: 1em; font-weight: bold; color: red;'
-                        onclick='toggleLike("frowns", "${childData.key}", "${user}")'>😥</span></div>
+                        style='font-size: 1em; font-weight: bold; color: red;'>😥</span></div>
             </td>
             <td>
-                <div class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+                <div id="c-dislikes" class="button-div" ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
                     ontouchend="this.style.backgroundColor='transparent';"><span id='dislikes'
-                        style='font-size: 1em; font-weight: bold; color: red;'
-                        onclick='toggleLike("dislikes", "${childData.key}", "${user}")'>👎</span></div>
+                        style='font-size: 1em; font-weight: bold; color: red;'>👎</span></div>
             </td>
         </tr>
     </table>	
 	`;
+
+
 
 	modal.innerHTML = `<div style="text-align:center">${rButton}
 		<a class='remove-button'>Remove</a>
@@ -495,15 +540,6 @@ function reactModal(clickX, clickY, childData) {
 	remButton.style.color = '#ccc';
 	remButton.style.cursor = 'pointer';
 
-	var cells = document.querySelectorAll('#myTable td');
-	cells.forEach(function (cell) {
-		cell.addEventListener('click', function () {
-			alert('Cell clicked: ' + cell.textContent);
-			console.log("ddsgsdgdsg");
-			// You can replace the alert with your desired action or code
-		});
-	});
-
 	closeButton.addEventListener('click', function () {
 		modal.remove();
 		overlay.remove();
@@ -513,18 +549,50 @@ function reactModal(clickX, clickY, childData) {
 		toggleLike("", childData.key, user);
 	});
 
+	var cLoves = modal.querySelector('#c-loves');
+	cLoves.addEventListener('click', function () {
+		toggleLike("loves", childData.key, user);
+
+	});
+
+	var cLikes = modal.querySelector('#c-likes');
+	cLikes.addEventListener('click', function () {
+		toggleLike("likes", childData.key, user);
+	});
+
+	var cHahas = modal.querySelector('#c-hahas');
+	cHahas.addEventListener('click', function () {
+		toggleLike("hahas", childData.key, user);
+	});
+
+	var cWows = modal.querySelector('#c-wows');
+	cWows.addEventListener('click', function () {
+		toggleLike("wows", childData.key, user);
+	});
+
+	var cFrowns = modal.querySelector('#c-frowns');
+	cFrowns.addEventListener('click', function () {
+		toggleLike("frowns", childData.key, user);
+	});
+
+	var cDislikes = modal.querySelector('#c-dislikes');
+	cDislikes.addEventListener('click', function () {
+		toggleLike("dislikes", childData.key, user);
+	});
+
+
 	// Add modal and overlay to the page
 	document.body.appendChild(modal);
 	document.body.appendChild(overlay);
 
 	firebase.database().ref(`quotes/${childData.key}/react/${user}`).once('value', function (snapshot) {
-        // Get the value from the snapshot using val()
-        var snapshotValue = snapshot.val();
+		// Get the value from the snapshot using val()
+		var snapshotValue = snapshot.val();
 		toggleLike(snapshotValue, childData.key, user);
 
-        // Now, you can use snapshotValue as the data retrieved from the database
-        console.log(snapshotValue);
-    });
+		// Now, you can use snapshotValue as the data retrieved from the database
+		console.log(snapshotValue);
+	});
 }
 
 
@@ -679,4 +747,5 @@ function menuModal(clickX, clickY, childData) {
 	// Add modal and overlay to the page
 	document.body.appendChild(modal);
 	document.body.appendChild(overlay);
+
 }

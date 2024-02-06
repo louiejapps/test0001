@@ -1311,3 +1311,21 @@ body {
     border-radius: 4px;
     cursor: pointer;
 }
+
+.button-div {
+    background-color: transparent;
+    padding: 2.5px;
+    margin-right: 5px;
+    cursor: pointer;
+    color: #65676b;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.button-div:hover {
+    background-color: rgba(211, 211, 211, 0.7);
+}
+
+.button-div:active {
+    background-color: rgba(211, 211, 211, 0.7);
+}

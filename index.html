@@ -16,17 +16,6 @@
 
 <body>
 
-    <div style="position: relative; cursor: pointer; display: flex; align-items: center;" onclick="toggleEmojiContainer()">
-        Click me
-        <div style="display: none; position: absolute; top: -40px; right: 0; background-color: #fff; border: 1px solid #ccc; border-radius: 5px; padding: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); z-index: 1; white-space: nowrap;" id="emojiContainer">
-            <span style="display: inline-block; margin: 5px; cursor: pointer;" onclick="react('👍')">👍</span>
-            <span style="display: inline-block; margin: 5px; cursor: pointer;" onclick="react('❤️')">❤️</span>
-            <span style="display: inline-block; margin: 5px; cursor: pointer;" onclick="react('😄')">😄</span>
-            <span style="display: inline-block; margin: 5px; cursor: pointer;" onclick="react('😊')">😊</span>
-            <!-- Add more emojis as needed -->
-        </div>
-    </div>
-
     <div id="loading-page" class="loading-page">
         <div class="content-box">
             <div class="fruits-animation-wrapper">
@@ -44,6 +33,10 @@
 
     <a id="top"></a>
     <div id="container">
+
+        <div id="yourDivId">
+
+          </div>
 
         <div id="navigator" style="text-align: center;width: auto;">
             <div>
