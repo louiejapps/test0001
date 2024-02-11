@@ -98,14 +98,17 @@ function postModal() {
 	var closeButton = modal.querySelector('.close-button');
 	closeButton.style.cssText = `
     	position: absolute;
-    	top: 108%;
-    	left: 44%;
+    	top: 103%;
+    	left: 46.5%;
     	font-size: 35px;
     	cursor: pointer;
     	background: transparent;
     	font-size: 35px;
     	cursor: pointer;`;
-	closeButton.innerHTML = '<div class="circle"><span><big><big>&times;</span></div>';
+	closeButton.innerHTML = `<svg class="circle" width="32" height="32" fill="white" class="bi bi-x-circle" viewBox="0 0 16 16">
+		<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+		<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+	  </svg>`;
 
 	closeButton.addEventListener('click', function () {
 		modal.remove();
@@ -397,12 +400,15 @@ function commentModal(childData) {
 
 	var closeButton = modal.querySelector('.close-button');
 	closeButton.style.position = 'absolute';
-	closeButton.style.top = '103%';
-	closeButton.style.left = '44%';
+	closeButton.style.top = '101.5%';
+	closeButton.style.left = '46.5%';
 	closeButton.style.fontSize = '35px';
 	closeButton.style.cursor = 'pointer';
 	closeButton.style.background = 'transparent'; // remove the background image property
-	closeButton.innerHTML = '<div class="circle"><span><big><big>&times;</span></div>'; // wrap the X icon inside a div element with a class name for the circle
+	closeButton.innerHTML = `<svg class="circle" width="16" height="16" fill="white" class="bi bi-x-circle" viewBox="0 0 16 16">
+	<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+	<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+  </svg>`;
 	closeButton.style.fontSize = '35px';
 	closeButton.style.cursor = 'pointer';
 
@@ -415,6 +421,11 @@ function commentModal(childData) {
 	overlay.style.height = '100%';
 	overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
 	overlay.style.zIndex = '9998';
+
+	overlay.addEventListener('dblclick', function () {
+		modal.remove();
+		overlay.remove();
+	});
 
 	// Add event listener to close button
 	closeButton.addEventListener('click', function () {
@@ -466,7 +477,7 @@ function commentModal(childData) {
 
 
 
-	
+
 	var containerSticker = modal.querySelector('#container-sticker');
 
 	var commentSend = modal.querySelector('#comment-send');
@@ -475,12 +486,12 @@ function commentModal(childData) {
 
 	commentSend.addEventListener('click', function () {
 
-		if(commentInput.value === ""){
+		if (commentInput.value === "") {
 
-		}else{
+		} else {
 			setComment(childData.key, user, commentInput.value, "");
 		}
-		
+
 		loadComments(childData.key, commentTB);
 		commentInput.value = "";
 	});
@@ -494,19 +505,19 @@ function commentModal(childData) {
 			containerSticker.style.display = 'block';
 		}
 	});
-	
+
 
 	for (let i = 1; i <= 22; i++) {
 		const stickerId = i < 10 ? `0${i}` : `${i}`;
 		const stickerElement = modal.querySelector(`#sticker-${stickerId}`);
-		
+
 		stickerElement.addEventListener('click', function () {
 			containerSticker.style.display = 'none';
 			setComment(childData.key, user, commentInput.value, stickerId);
 			loadComments(childData.key, commentTB);
 		});
 	}
-	
+
 
 	document.body.appendChild(modal);
 	document.body.appendChild(overlay);
@@ -598,12 +609,16 @@ function reactModal(clickX, clickY, childData) {
 	// Style close button
 	var closeButton = modal.querySelector('.close-button');
 	closeButton.style.position = 'absolute';
-	closeButton.style.top = '108%';
-	closeButton.style.left = '44%';
+	closeButton.style.top = '1%';
+	closeButton.style.left = '88%';
 	closeButton.style.fontSize = '35px';
 	closeButton.style.cursor = 'pointer';
+	closeButton.style.display = 'none';
 	closeButton.style.background = 'transparent'; // remove the background image property
-	closeButton.innerHTML = '<div class="circle"><span><big><big>&times;</span></div>'; // wrap the X icon inside a div element with a class name for the circle
+	closeButton.innerHTML = `<svg class="circle" width="16" height="16" fill="white" class="bi bi-x-circle" viewBox="0 0 16 16">
+	<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+	<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+  </svg>`;
 	closeButton.style.fontSize = '35px';
 	closeButton.style.cursor = 'pointer';
 
@@ -634,37 +649,71 @@ function reactModal(clickX, clickY, childData) {
 
 	remButton.addEventListener('click', function () {
 		toggleLike("", childData.key, user);
+		setTimeout(function () {
+			modal.remove();
+			overlay.remove();
+		}, 1000);
 	});
 
 	var cLoves = modal.querySelector('#c-loves');
 	cLoves.addEventListener('click', function () {
 		toggleLike("loves", childData.key, user);
+		setTimeout(function () {
+			modal.remove();
+			overlay.remove();
+		}, 1000);
 
 	});
 
 	var cLikes = modal.querySelector('#c-likes');
 	cLikes.addEventListener('click', function () {
 		toggleLike("likes", childData.key, user);
+		setTimeout(function () {
+			modal.remove();
+			overlay.remove();
+		}, 1000);
 	});
 
 	var cHahas = modal.querySelector('#c-hahas');
 	cHahas.addEventListener('click', function () {
 		toggleLike("hahas", childData.key, user);
+		setTimeout(function () {
+			modal.remove();
+			overlay.remove();
+		}, 1000);
 	});
 
 	var cWows = modal.querySelector('#c-wows');
 	cWows.addEventListener('click', function () {
 		toggleLike("wows", childData.key, user);
+		setTimeout(function () {
+			modal.remove();
+			overlay.remove();
+		}, 1000);
 	});
 
 	var cFrowns = modal.querySelector('#c-frowns');
 	cFrowns.addEventListener('click', function () {
 		toggleLike("frowns", childData.key, user);
+		setTimeout(function () {
+			modal.remove();
+			overlay.remove();
+		}, 1000);
 	});
 
 	var cDislikes = modal.querySelector('#c-dislikes');
 	cDislikes.addEventListener('click', function () {
 		toggleLike("dislikes", childData.key, user);
+		setTimeout(function () {
+			modal.remove();
+			overlay.remove();
+		}, 1000);
+
+	});
+
+	overlay.addEventListener('click', function () {
+		modal.remove();
+		overlay.remove();
 	});
 
 
@@ -680,6 +729,11 @@ function reactModal(clickX, clickY, childData) {
 		// Now, you can use snapshotValue as the data retrieved from the database
 		console.log(snapshotValue);
 	});
+
+	setTimeout(function () {
+		modal.remove();
+		overlay.remove();
+	}, 2000);
 }
 
 
@@ -737,11 +791,16 @@ function menuModal(clickX, clickY, childData) {
 	var closeButton = modal.querySelector('.close-button');
 	closeButton.style.position = 'absolute';
 	closeButton.style.top = '108%';
-	closeButton.style.left = '44%';
+	closeButton.style.left = '46.5%';
 	closeButton.style.fontSize = '35px';
 	closeButton.style.cursor = 'pointer';
+	closeButton.style.display = 'none';
+
 	closeButton.style.background = 'transparent'; // remove the background image property
-	closeButton.innerHTML = '<div class="circle"><span><big><big>&times;</span></div>'; // wrap the X icon inside a div element with a class name for the circle
+	closeButton.innerHTML = `<svg class="circle" width="16" height="16" fill="white" class="bi bi-x-circle" viewBox="0 0 16 16">
+	<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+	<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+  </svg>`;
 	closeButton.style.fontSize = '35px';
 	closeButton.style.cursor = 'pointer';
 
@@ -826,6 +885,11 @@ function menuModal(clickX, clickY, childData) {
 		overlay.remove();
 	});
 
+	overlay.addEventListener('click', function () {
+		modal.remove();
+		overlay.remove();
+	});
+
 	closeButton.addEventListener('click', function () {
 		modal.remove();
 		overlay.remove();
@@ -835,4 +899,139 @@ function menuModal(clickX, clickY, childData) {
 	document.body.appendChild(modal);
 	document.body.appendChild(overlay);
 
+}
+
+function thoughtModal() {
+	sessionStorage.setItem("link", "?");
+	sessionStorage.setItem("base64", "");
+	rnum = "";
+
+	upflag = false;
+	var modal = document.createElement('div');
+
+	let myAuthor = "<big><b style='color:#ed4c2b;'>" + "Thoughts" + "</b></big>";
+	let imgButton = "<input type='file' id='img-button' onchange='handleImage()' accept='image/*'>";
+	let postButton = "<button class='view-button' id='post-button'>POST</button>";
+	let htmlString = `
+	
+			<textarea id='caption' name='caption' maxlength='320' placeholder='Write something...'></textarea>
+			`;
+	modal.innerHTML = "<center><div><p>" + myAuthor + "" +
+		"</div></div>" + imgButton + htmlString + postButton + "<a class='remove-button'>Remove</a><div class='close-button'></div>";
+
+	modal.style.position = 'fixed';
+	modal.style.top = '36%';
+	modal.style.left = '50%';
+	//modal.style.width = '90vw';
+	modal.style.height = 'auto';
+	modal.style.transform = 'translate(-50%, -50%)';
+	modal.style.backgroundColor = 'white';
+	modal.style.padding = '20px';
+	modal.style.border = '1px #aaa';
+	modal.style.borderRadius = '10px';
+	modal.style.zIndex = '9999';
+
+	// Define minimum width in pixels
+	const minWidth = 330; // Adjust this value as needed
+
+	// Check if the viewport is in landscape or portrait mode
+	if (window.matchMedia("(orientation: landscape)").matches) {
+		// Landscape mode (desktop)
+		modal.style.width = `420px`;
+	} else {
+		// Portrait mode (mobile devices)
+		modal.style.width = `320px`;
+	}
+
+	var captionArea = modal.querySelector('#caption');
+
+
+	var closeButton = modal.querySelector('.close-button');
+	closeButton.style.cssText = `
+    	position: absolute;
+    	top: 103%;
+    	left: 46.5%;
+    	font-size: 35px;
+    	cursor: pointer;
+    	background: transparent;
+    	font-size: 35px;
+    	cursor: pointer;`;
+	closeButton.innerHTML = `<svg class="circle" width="32" height="32" fill="white" class="bi bi-x-circle" viewBox="0 0 16 16">
+		<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+		<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+	  </svg>`;
+
+	closeButton.addEventListener('click', function () {
+		modal.remove();
+		overlay.remove();
+	});
+
+	var overlay = document.createElement('div');
+	overlay.style.cssText = `
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.85);
+		z-index: 9998;
+	`;
+
+	let posButton = modal.querySelector('#post-button');
+	posButton.style.cssText = `
+		margin-top: 10px;
+		margin-bottom: 15px;
+		font-weight: bold;
+		border-radius: 15px;
+		width: 100%;
+	`;
+	posButton.disabled = true;
+
+	closeButton.addEventListener('click', function () {
+		modal.remove();
+		overlay.remove();
+	});
+
+	// Add modal and overlay to the page
+	document.body.appendChild(modal);
+	document.body.appendChild(overlay);
+
+	//POSTBUTTON
+	//POSTBUTTON
+
+	posButton.addEventListener('click', function () {
+
+		let bkg = "";
+
+		if (rnum === "") {
+			bkg = "";
+		} else {
+			bkg = gradients[rnum];
+		}
+
+		if (sessionStorage.getItem("link") === "?") {
+			if (saveData("?", user, "?", Textarea.value, bkg)) {
+				modal.remove();
+				overlay.remove();
+			}
+		} else {
+			if (saveData(sessionStorage.getItem("link"), user, sessionStorage.getItem("base64"), Textarea.value, null)) {
+				modal.remove();
+				overlay.remove();
+			}
+		}
+	});
+
+	var Textarea = document.querySelector('#caption');
+
+	Textarea.addEventListener('input', function () {
+		// Check if the textarea is not empty
+		if (Textarea.value.trim() !== '') {
+			// Enable the button
+			posButton.disabled = false;
+		} else {
+			// Disable the button if the textarea is empty
+			posButton.disabled = true;
+		}
+	});
 }
