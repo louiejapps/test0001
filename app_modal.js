@@ -237,87 +237,141 @@ function commentModal(childData) {
 	var counter = false;
 	var modal = document.createElement('div');
 
+
 	let vButton = `<div class="img-container">
     				<img class="view-button" src="${childData.thumbnail}" alt="Description of the image">
 				</div>`;
 
 	let scaption = "";
 	if (childData.thumbnail === "?") {
-	
-			let myBackground = "";
 
-			let fontSize = (childData.caption.length < 160) ? "font-size:1.4em" : "font-size:1.2em";
+		let myBackground = "";
+
+		let fontSize = (childData.caption.length < 160) ? "font-size:1.4em" : "font-size:1.2em";
 
 
-			if (childData.background === "") {
-				myBackground = "" + ";white-space: pre-line;text-align:center; color: #444; font-weight: normal;word-wrap:break-word;padding:10px;font-size:1.3em'"
-			} else {
-				myBackground = childData.background + ";text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); " + 
+		if (childData.background === "") {
+			myBackground = "" + ";white-space: pre-line;text-align:center; color: #444; font-weight: normal;word-wrap:break-word;padding:10px;font-size:1.3em'"
+		} else {
+			myBackground = childData.background + ";text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); " +
 				"color: #fff;white-space: pre-line;text-align:center; font-weight: bold;" + fontSize + "; word-wrap:break-word;padding:75px; font-family: sans-serif'";
-			}
+		}
 
 
 
-			scaption = "<p style='background:" + myBackground + ">" + childData.caption + "</p>";
+		scaption = "<p style='background:" + myBackground + ">" + childData.caption + "</p>";
 
 
-	}else{
+	} else {
 		scaption = `
 		<span id='span-caption' style='text-align:center; font-size:1.1em; color: #444;font-weight:bold; word-wrap:break-word;margin:2.5px'; >
 		${childData.caption}
 		</span>`;
 	}
 
-	modal.innerHTML = `<center><div>
+	modal.innerHTML = `
 
-		</div></div>
-		${vButton}
-		<section id="view-HD-button" style="color: #5a5a5a; font-size: 0.8em; font-weight: bold;  background-color: #f5f5f5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); text-align: center; cursor: pointer;">VIEW HIGH QUALITY</section>
-		<br>
-		${scaption}
-		<div style="max-height: 150px; width=100%; margin-top:7.5px; overflow-y: scroll;">
-        <table id="comment-table" class="tbF" align="center">
-            <tbody id="comment-tb"></tbody>
-        </table>
-    </div>
-	
-    <div style="display: flex; align-items: center;">
-        <div style="position: relative; width: calc(100%); margin-top: 5px;">
-            <input id="comment-input" type="text"
-                style="width: 100%; padding: 10px; padding-right: 70px;  border: 1px solid #cccccc; border-radius: 5px;"
-                maxlength='140' placeholder="Write a comment...">
+	<div>
+	<table style='margin:0px'>
+		<tr>
+			<td rowspan='2' style='text-align:center;'>
+				<img src='${profileHashMap[childData.uname]}' alt='Profile Image' width='28'
+					style='border-radius: 50%;'>
+			</td>
+			<td>
+				<span style='color:#ed4c2b;font-weight:bold;font-size: 0.7em'>${childData.uname}</span>
+			</td>
+		</tr>
+		<tr>
+			<td><span
+					style='color:#808080;word-wrap: break-word;font-size: 0.6em'>${getTimeString(childData.timestamp)}</span>
+			</td>
+		</tr>
+	</table>
+</div>
 
-            <div id="comment-send2" class="button-div"
-                ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
-                ontouchend="this.style.backgroundColor='transparent';"
-                style="position: absolute; top: 50%; right: 35px; transform: translateY(-50%); padding: 7px;">
-                <svg width="16" height="16" fill="currentColor" style="vertical-align: middle; text-align: center;"
-                    class="bi bi-emoji-smile" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path
-                        d="M4.285 9.567a.5.5 0 0 1 .683.183A3.5 3.5 0 0 0 8 11.5a3.5 3.5 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5" />
-                </svg>
-            </div>
+<center>
+	<div>
 
-            <div id="comment-send" class="button-div"
-                ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
-                ontouchend="this.style.backgroundColor='transparent';"
-                style="position: absolute; top: 50%; right: 5px; transform: translateY(-50%); padding: 7px;">
-                <svg width="16" height="16" fill="currentColor" class="bi bi-send"
-                    style="text-align: center; vertical-align: middle;" viewBox="0 0 16 16">
-                    <path
-                        d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
-                </svg>
-            </div>
-        </div>
-    </div>
-    <div class='close-button'></div>
+	</div>
+	</div>
+	${vButton}
+	<section id="view-HD-button"
+		style="color: #5a5a5a; font-size: 0.8em; font-weight: bold;  background-color: #f5f5f5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); text-align: center; cursor: pointer;">
+		VIEW HIGH QUALITY</section>
+	<br>
+	${scaption}
+	<div style="max-height: 150px; width=100%; margin-top:7.5px; overflow-y: scroll;">
+		<table id="comment-table" class="tbF" align="center">
+			<tbody id="comment-tb"></tbody>
+		</table>
+	</div>
 
-	
-`;
+	<div style="display: flex; align-items: center;">
+		<div style="position: relative; width: calc(100%); margin-top: 5px;">
+			<input id="comment-input" type="text"
+				style="width: 100%; padding: 10px; padding-right: 70px;  border: 1px solid #cccccc; border-radius: 5px;"
+				maxlength='140' placeholder="Write a comment...">
+
+			<div id="comment-sticker" class="button-div"
+				ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+				ontouchend="this.style.backgroundColor='transparent';"
+				style="position: absolute; top: 50%; right: 35px; transform: translateY(-50%); padding: 7px;">
+				<svg width="16" height="16" fill="currentColor" style="vertical-align: middle; text-align: center;"
+					class="bi bi-emoji-smile" viewBox="0 0 16 16">
+					<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+					<path
+						d="M4.285 9.567a.5.5 0 0 1 .683.183A3.5 3.5 0 0 0 8 11.5a3.5 3.5 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5" />
+				</svg>
+			</div>
+
+			<div id="comment-send" class="button-div"
+				ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';"
+				ontouchend="this.style.backgroundColor='transparent';"
+				style="position: absolute; top: 50%; right: 5px; transform: translateY(-50%); padding: 7px;">
+				<svg width="16" height="16" fill="currentColor" class="bi bi-send"
+					style="text-align: center; vertical-align: middle;" viewBox="0 0 16 16">
+					<path
+						d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+				</svg>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="sticker-scrollable-container" id="container-sticker">
+		
+		<div class="sticker-chat-buddy" id="sticker-01"><img src="mage/01.png" height="75px" alt="Hi"></div>
+		<div class="sticker-chat-buddy" id="sticker-02"><img src="mage/02.png" height="75px" alt="OK"></div>
+		<div class="sticker-chat-buddy" id="sticker-03"><img src="mage/03.png" height="75px" alt="Sorry"></div>
+		<div class="sticker-chat-buddy" id="sticker-04"><img src="mage/04.png" height="75px" alt="Amaze"></div>
+		<div class="sticker-chat-buddy" id="sticker-05"><img src="mage/05.png" height="75px" alt="Yes"></div>
+		<div class="sticker-chat-buddy" id="sticker-06"><img src="mage/06.png" height="75px" alt="Thanks"></div>
+		<div class="sticker-chat-buddy" id="sticker-07"><img src="mage/07.png" height="75px" alt="Heart"></div>
+		<div class="sticker-chat-buddy" id="sticker-08"><img src="mage/08.png" height="75px" alt="Agree"></div>
+		<div class="sticker-chat-buddy" id="sticker-09"><img src="mage/09.png" height="75px" alt="Hmm"></div>
+		<div class="sticker-chat-buddy" id="sticker-10"><img src="mage/10.png" height="75px" alt="Yehey"></div>
+		<div class="sticker-chat-buddy" id="sticker-11"><img src="mage/11.png" height="75px" alt="Kissy"></div>
+		<div class="sticker-chat-buddy" id="sticker-12"><img src="mage/12.png" height="75px" alt="Tears"></div>
+		<div class="sticker-chat-buddy" id="sticker-13"><img src="mage/13.png" height="75px" alt="Wow"></div>
+		<div class="sticker-chat-buddy" id="sticker-14"><img src="mage/14.png" height="75px" alt="Hehe"></div>
+		<div class="sticker-chat-buddy" id="sticker-15"><img src="mage/15.png" height="75px" alt="See you"></div>
+		<div class="sticker-chat-buddy" id="sticker-16"><img src="mage/16.png" height="75px" alt="Flying kiss"></div>
+		<div class="sticker-chat-buddy" id="sticker-17"><img src="mage/17.png" height="75px" alt="Music"></div>
+		<div class="sticker-chat-buddy" id="sticker-18"><img src="mage/18.png" height="75px" alt="Thanks"></div>
+		<div class="sticker-chat-buddy" id="sticker-19"><img src="mage/19.png" height="75px" alt="Hi"></div>
+		<div class="sticker-chat-buddy" id="sticker-20"><img src="mage/20.png" height="75px" alt="Dazed"></div>
+		<div class="sticker-chat-buddy" id="sticker-21"><img src="mage/21.png" height="75px" alt="I see"></div>
+		<div class="sticker-chat-buddy" id="sticker-22"><img src="mage/22.png" height="75px" alt="Amazed"></div>
+	</div>
+
+
+	<div class='close-button'></div>
+	`;
 
 	modal.style.position = 'fixed';
-	modal.style.top = '41%';
+	modal.style.top = '50%';
 	modal.style.left = '50%';
 	//modal.style.width = '90vw';
 	modal.style.height = 'auto';
@@ -391,7 +445,7 @@ function commentModal(childData) {
 		viewHDButton.style.display = `none`;
 	}
 
-	if(childData.caption === ""){
+	if (childData.caption === "") {
 		modal.querySelector('#span-caption').style.display = `none`;
 	}
 
@@ -412,14 +466,47 @@ function commentModal(childData) {
 
 
 
+	
+	var containerSticker = modal.querySelector('#container-sticker');
+
 	var commentSend = modal.querySelector('#comment-send');
+	var commentSticker = modal.querySelector('#comment-sticker');
 	var commentInput = modal.querySelector('#comment-input');
 
 	commentSend.addEventListener('click', function () {
-		setComment(childData.key, user, commentInput.value);
+
+		if(commentInput.value === ""){
+
+		}else{
+			setComment(childData.key, user, commentInput.value, "");
+		}
+		
 		loadComments(childData.key, commentTB);
 		commentInput.value = "";
 	});
+
+	containerSticker.style.display = "none";
+
+	commentSticker.addEventListener('click', function () {
+		if (containerSticker.style.display === 'block') {
+			containerSticker.style.display = 'none';
+		} else {
+			containerSticker.style.display = 'block';
+		}
+	});
+	
+
+	for (let i = 1; i <= 22; i++) {
+		const stickerId = i < 10 ? `0${i}` : `${i}`;
+		const stickerElement = modal.querySelector(`#sticker-${stickerId}`);
+		
+		stickerElement.addEventListener('click', function () {
+			containerSticker.style.display = 'none';
+			setComment(childData.key, user, commentInput.value, stickerId);
+			loadComments(childData.key, commentTB);
+		});
+	}
+	
 
 	document.body.appendChild(modal);
 	document.body.appendChild(overlay);

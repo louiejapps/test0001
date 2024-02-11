@@ -9,6 +9,8 @@ var firebaseConfig = {
 	appId: "1:294529638144:web:f2c2c504d1ed9a12641de5"
 };
 
+
+
 firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage();
 
@@ -29,9 +31,8 @@ var selectedText = "";
 var rnum = "";
 
 
-let user = "";
-const name = "";
-let uarray = ['Frenzo125', 'Fenimaure', 'FindingXY', 'ZzenN', 'Pennyclied30', 'Coolbookkeeper7', 'Jolyows', 'XtreamCH', 'ZzzChizCurlzzZ', 'JellyMuse', 'lystar', 'sevenEvelyn', 'Bradford', 'Metsuki', 'mjba4w'];
+
+
 /*
 var usersRef = database.ref('users');
 
@@ -443,7 +444,12 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 				}
 				//myQuote = "<img src='" + imageURL + "' alt='Cannot load image 😓' id='load-image' style='width: 100%;'>";
 			} else {
-				myQuote = "<center><img id='thumbs' src='" + childData.thumbnail + "' alt='Cannot load image 😓' id='load-image'  style='max-width: 100%;max-height:400px'  style='display: none;'><div class='loading-text' style='display:none'>...</div></center>";
+
+				
+					myQuote = `<center><img id='thumbs' src='${childData.thumbnail}' alt='Cannot load image 😓' id='load-image'
+					style='max-width: 100%;max-height:400px'  style='display: none;'></center>`;
+				
+				
 				if (childData.hasOwnProperty('caption')) {
 					if (childData.caption === "") {
 						myCaption = "";
@@ -489,17 +495,17 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 			let reactBut = "";
 
 			if (myReaction === "likes") {
-				reactBut = `<span style = "font-size: 1.2em">👍</span>`;
+				reactBut = `<span style = "font-size: 1.2em">👍 Like</span>`;
 			} else if (myReaction === "loves") {
-				reactBut = `<span style = "font-size: 1.2em">❤️</span>`;
+				reactBut = `<span style = "font-size: 1.2em">❤️ Love</span>`;
 			} else if (myReaction === "wows") {
-				reactBut = `<span style = "font-size: 1.2em">🔥</span>`;
+				reactBut = `<span style = "font-size: 1.2em">🔥 Lit</span>`;
 			} else if (myReaction === "hahas") {
-				reactBut = `<span style = "font-size: 1.2em">😂</span>`;
+				reactBut = `<span style = "font-size: 1.2em">😂 Funny</span>`;
 			} else if (myReaction === "frowns") {
-				reactBut = `<span style = "font-size: 1.2em">😥</span>`;
+				reactBut = `<span style = "font-size: 1.2em">😥 Worried</span>`;
 			} else if (myReaction === "dislikes") {
-				reactBut = `<span style = "font-size: 1.2em">👎</span>`;
+				reactBut = `<span style = "font-size: 1.2em">👎 Dislike</span>`;
 			} else {
 				reactBut = `
 				<svg width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up" style="vertical-align: middle;" viewBox="0 0 16 16">
@@ -542,8 +548,8 @@ ${dotsMenu}
 				hahas: getReactCount(childData.key, "hahas"),
 				frowns: getReactCount(childData.key, "frowns"),
 				dislikes: getReactCount(childData.key, "dislikes"),
-				views: 1,
-				comments: 1
+				views: getCount(childData.key, "views"),
+				comments:  getCount(childData.key, "comments")
 			};
 
 			let rowData = `
@@ -598,6 +604,7 @@ ${dotsMenu}
 
 			if (thumbsBut) {
 				rrow.querySelector(`#thumbs`).addEventListener("click", function (event) {
+					setViewer(childData.key, sessionNumber);
 					commentModal(childData);
 				});
 			}
@@ -622,6 +629,7 @@ ${dotsMenu}
 			});
 
 			rrow.querySelector(`#comment-div`).addEventListener("click", function () {
+				setViewer(childData.key, sessionNumber);
 				commentModal(childData);
 			});
 			document.title = "Liszt | " + user;
@@ -668,6 +676,12 @@ s::::::::::::::s a:::::aaaa::::::a          v:::::v          e::::::::eeeeeeee  
   sssssssssss      aaaaaaaaaa  aaaa           vvv               eeeeeeeeeeeeee     ddddddddd   ddddd  aaaaaaaaaa  aaaa          ttttttttttt    aaaaaaaaaa  aaaa
 
 */
+
+function setViewer(id, sn) {
+    var quoteRef = database.ref(`quotes/${id}/views/${sn}`);
+    quoteRef.set(true);
+}
+
 
 function saveData(quote, uname, tbn, caption, background) {
 	inputChanged = false;
@@ -762,6 +776,24 @@ function getReactCount(quoteId, type) {
 
 	var itemCount = 0;
 	firebase.database().ref(`quotes/${quoteId}/react`).orderByValue().equalTo(type).once('value', function (snapshot) {
+
+		if (snapshot.exists()) {
+			itemCount = snapshot.numChildren();
+			//console.log(itemCount);
+		} else {
+			itemCount = 0;
+		}
+		//updatelike(type, itemCount);
+	});
+
+	//console.log(itemCount);
+	return itemCount;
+}
+
+function getCount(quoteId, commentview) {
+
+	var itemCount = 0;
+	firebase.database().ref(`quotes/${quoteId}/${commentview}`).once('value', function (snapshot) {
 
 		if (snapshot.exists()) {
 			itemCount = snapshot.numChildren();
@@ -876,13 +908,18 @@ function togglePin(quoteId) {
 
 
 
-function setComment(key, username, message) {
+function setComment(key, username, message, stype) {
 
-	console.log(message);
-	// Assuming you have a 'comments' node under each quoteId
+	console.log(stype);
+
 	const commentsRef = database.ref(`quotes/${key}/comments`);
 
-	// Push a new comment object with username and message
+	let stickerPost = `<img src="mage/${stype}.png" height="75px">`;
+
+	if(!(stype === "")){
+		message = stickerPost;
+	}
+
 	commentsRef.push({
 		username: username,
 		message: message,
@@ -921,7 +958,7 @@ function loadComments(key, commentTB) {
 			<table border="0" style="border-collapse: collapse; width: 100%;">
 			<tr>
 				<td style="width: 25px; height: 25px; padding: 1px; text-align: center;">
-					<img src='${profileHashMap[commentData.username]}' alt='Profile Image' width='32px style='border-radius: 50%;'>
+					<img src='${profileHashMap[commentData.username]}' alt='Profile Image' width='32px' style='border-radius: 50%;'>
 				</td>
 				<td style="padding: 1px; text-align: center;">
 					<div style="${maxW}; height: auto; background-color: #ffffff; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -933,7 +970,10 @@ function loadComments(key, commentTB) {
 					<br>
 					<div style="display: flex; justify-content: space-between;">
 					<span style="color: #b0b3b8; font-size: 0.7em; word-wrap: break-word;">${getTimeString(commentData.timestamp)}</span>
-					<span id="del-comment" style="display: inline-block; color: #FF6961; font-size: 0.7em; word-wrap: break-word;">Delete</span>
+					<span class="button-div" id="del-comment" style="display: inline-block; color: #FF6961; font-size: 0.7em; word-wrap: break-word;"
+					ontouchstart="this.style.backgroundColor='rgba(211, 211, 211, 0.7)';" 
+					ontouchend="this.style.backgroundColor='transparent';"
+					>Delete</span>
 				  </div>
 				  
 					</div>
@@ -944,7 +984,8 @@ function loadComments(key, commentTB) {
 
 		commentTB.appendChild(crow);
 
-		crow.querySelector('#del-comment').addEventListener('click', function () {
+		crow.querySelector('#del-comment').addEventListener('dblclick', function () {
+			event.preventDefault();
 			commentsRef.child(commentData.key).remove()
 				.then(() => {
 					loadComments(key, commentTB);
