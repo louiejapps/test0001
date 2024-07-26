@@ -1,12 +1,12 @@
 // Initialize Firebase
 var firebaseConfig = {
-	apiKey: "AIzaSyD7156apCcrJnRX9cP8KSazMbILNJgKEt0",
-	authDomain: "lois-files.firebaseapp.com",
-	projectId: "lois-files",
-	databaseURL: "https://lois-files-default-rtdb.asia-southeast1.firebasedatabase.app/",
-	storageBucket: "lois-files.appspot.com",
-	messagingSenderId: "294529638144",
-	appId: "1:294529638144:web:f2c2c504d1ed9a12641de5"
+	apiKey: "AIzaSyBnYiOpsWkdxTkAT2WiewW7w505kR73Y1s",
+  authDomain: "everglow14388.firebaseapp.com",
+  projectId: "everglow14388",
+  databaseURL: "https://everglow14388-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  storageBucket: "everglow14388.appspot.com",
+  messagingSenderId: "448066688073",
+  appId: "1:448066688073:web:021c4898dacce330b61b98"
 };
 
 
@@ -61,7 +61,8 @@ console.log(uarray);
 */
 
 var userInput = randomNum(0, (uarray.length - 1));
-user = uarray[parseInt(userInput)];
+user = `Admin`;
+//user = uarray[parseInt(userInput)];
 
 localStorage.setItem("data", internetTime);
 sessionStorage.setItem("link", "?");
@@ -79,6 +80,7 @@ var childNum = 0;
 
 loadDatabase(items, "", true, pinTableBody);
 loadDatabase(items, "", false, quoteTableBody);
+loadThoughts();
 
 
 const reactArr = ["loves", "likes", "wows", "hahas", "frowns", "dislikes"];
@@ -105,6 +107,10 @@ function resetPage() {
 
 
 showFormButton.addEventListener('click', function () {
+	postModal();
+});
+
+floatingIcon.addEventListener('click', function () {
 	postModal();
 });
 
@@ -153,6 +159,10 @@ moreButton.addEventListener('click', function () {
 	}
 });
 
+document.getElementById('banner').addEventListener('dblclick', function (e) {
+	resetPage();
+});
+
 function checkRegex() {
 	let text = quoteTextarea.value;
 	const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -180,6 +190,168 @@ function checkRegex() {
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function loadThoughts() {
+	console.log("dgsd")
+	let messageHashMap = {
+		Admin: { image: `${profileHashMap['Admin']}`, shoutout: '+New Thoughts' },
+		Fenimaure: { image: profileHashMap['Fenimaure'], shoutout: 'This is great' },
+		ZzenN: { image: profileHashMap['ZzenN'], shoutout: 'I love this song 😍😍' },
+		Pennyclied30: { image: profileHashMap['Pennyclied30'], shoutout: '😁😁' },
+		Jolyows: { image: profileHashMap['Jolyows'], shoutout: 'Orange skies' },
+		XtreamCH: { image: profileHashMap['XtreamCH'], shoutout: '🙄😯' },
+		ZzzChizCurlzzZ: { image: profileHashMap['ZzzChizCurlzzZ'], shoutout: 'you only have to be right once' },
+		JellyMuse: { image: profileHashMap['JellyMuse'], shoutout: 'Go ahead, make my day.' },
+		lystar: { image: profileHashMap['lystar'], shoutout: '' },
+		sevenEvelyn: { image: profileHashMap['sevenEvelyn'], shoutout: 'All life is equal.' },
+		Bradford: { image: profileHashMap['Bradford'], shoutout: 'Valorant' },
+		Metsuki: { image: profileHashMap['Metsuki'], shoutout: '' },
+		mjba4w: { image: profileHashMap['mjba4w'], shoutout: 'RG' },
+		arrciiemm: { image: profileHashMap['arrciiemm'], shoutout: '' },
+		Redclouds: { image: profileHashMap['Redclouds'], shoutout: '' },
+		zoyuken: { image: profileHashMap['zoyuken'], shoutout: '' },
+		marssh: { image: profileHashMap['marssh'], shoutout: 'golden' },
+		abigail98: { image: profileHashMap['abigail98'], shoutout: '' },
+		rhomdz: { image: profileHashMap['rhomdz'], shoutout: '' },
+		zerojhe101: { image: profileHashMap['zerojhe101'], shoutout: 'earthworm' },
+		andreazxcv: { image: profileHashMap['andreazxcv'], shoutout: '' },
+		Frenzo125: { image: `${profileHashMap['Frenzo125']}`, shoutout: '達成' },
+		zekejaeger: { image: profileHashMap['zekejaeger'], shoutout: '' },
+		alkens: { image: profileHashMap['alkens'], shoutout: '' },
+		znerski: { image: profileHashMap['znerski'], shoutout: '' },
+		icebear: { image: profileHashMap['icebear'], shoutout: '追いかける' },
+		scarlett: { image: profileHashMap['scarlett'], shoutout: '' },
+		FindingXY: { image: profileHashMap['FindingXY'], shoutout: '' },
+
+		Coolbookkeeper7: { image: profileHashMap['Coolbookkeeper7'], shoutout: '12345😍' },
+		astrazelle: { image: profileHashMap['astrazelle'], shoutout: '' },
+		leviHeichou: { image: profileHashMap['leviHeichou'], shoutout: '' },
+		ParkJaechan: { image: profileHashMap['ParkJaechan'], shoutout: '' }
+	};
+
+	let mythought = "";
+
+	var quoteRef = database.ref(`users/Admin/thoughts`);
+	quoteRef.on('value', function (snapshot) {
+		mythought = snapshot.val(); // Retrieve the value from the snapshot
+		const chatListContainer = document.getElementById('chat-list');
+		chatListContainer.innerHTML = '';
+
+		// Loop through the profileHashMap
+		Object.entries(messageHashMap).forEach(([username, data]) => {
+			// Create a div element for each chat buddy
+			const buddyDiv = document.createElement('div');
+			buddyDiv.classList.add('chat-icon-container');
+
+			// Create an image element for the buddy's profile picture
+			const imgElement = document.createElement('img');
+			imgElement.src = data.image;
+			imgElement.alt = `${username}'s profile picture`;
+
+			// Add click event listener to the image
+			imgElement.addEventListener('click', () => {
+				if (username === `Admin`) {
+					thoughtModal(mythought);
+				} else {
+
+				}
+			});
+
+			// Append the image to the buddy div
+			buddyDiv.appendChild(imgElement);
+
+			// Add thought bubble for shoutout message if it's not empty
+			if (data.shoutout.trim() !== '') {
+				const thoughtBubble = document.createElement('div');
+				thoughtBubble.classList.add('thought-bubble');
+
+
+				if (username === `Admin`) {
+					console.log(mythought);
+					if (mythought === "") {
+						thoughtBubble.style.fontSize = `0.85em`;
+						thoughtBubble.style.fontFamily = `cursive`;
+						
+						thoughtBubble.style.fontWeight = `bold`;
+						thoughtBubble.style.lineHeight = `1em`;
+						thoughtBubble.style.maxWidth = `60px`;
+						thoughtBubble.textContent = "+New Thoughts";
+					} else {
+						thoughtBubble.textContent = mythought;
+					}
+
+				} else {
+					thoughtBubble.textContent = data.shoutout;
+				}
+				buddyDiv.appendChild(thoughtBubble);
+			}
+
+			// Create a text element for the profile name
+			const profileName = document.createElement('div');
+			profileName.classList.add('profile-name');
+			profileName.textContent = username;
+
+			// Append the profile name to the buddy div
+			buddyDiv.appendChild(profileName);
+
+			// Append the buddy div to the container
+			chatListContainer.appendChild(buddyDiv);
+		});
+
+	}, function (error) {
+		console.error("Error retrieving data:", error);
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*                                                                                                                          
 UUUUUUUU     UUUUUUUUPPPPPPPPPPPPPPPPP   LLLLLLLLLLL                  OOOOOOOOO                 AAA               DDDDDDDDDDDDD        
@@ -445,11 +617,11 @@ function loadDatabase(itemCount, searchkey, pin, tablebody) {
 				//myQuote = "<img src='" + imageURL + "' alt='Cannot load image 😓' id='load-image' style='width: 100%;'>";
 			} else {
 
-				
-					myQuote = `<center><img id='thumbs' src='${childData.thumbnail}' alt='Cannot load image 😓' id='load-image'
+
+				myQuote = `<center><img id='thumbs' src='${childData.thumbnail}' alt='Cannot load image 😓' id='load-image'
 					style='max-width: 100%;max-height:400px'  style='display: none;'></center>`;
-				
-				
+
+
 				if (childData.hasOwnProperty('caption')) {
 					if (childData.caption === "") {
 						myCaption = "";
@@ -549,7 +721,7 @@ ${dotsMenu}
 				frowns: getReactCount(childData.key, "frowns"),
 				dislikes: getReactCount(childData.key, "dislikes"),
 				views: getCount(childData.key, "views"),
-				comments:  getCount(childData.key, "comments")
+				comments: getCount(childData.key, "comments")
 			};
 
 			let rowData = `
@@ -678,8 +850,8 @@ s::::::::::::::s a:::::aaaa::::::a          v:::::v          e::::::::eeeeeeee  
 */
 
 function setViewer(id, sn) {
-    var quoteRef = database.ref(`quotes/${id}/views/${sn}`);
-    quoteRef.set(true);
+	var quoteRef = database.ref(`quotes/${id}/views/${sn}`);
+	quoteRef.set(true);
 }
 
 
@@ -733,10 +905,12 @@ function saveData(quote, uname, tbn, caption, background) {
 				} else {
 					myForm.style.display = 'none';
 					postFrom.reset();
-					showFormButton.style.display = 'block';
 					myContent.style.display = 'block';
 					notif.style.display = "block";
 					notif.innerHTML = "Shared Successfully!";
+					setTimeout(function () {
+						notif.innerHTML = "";
+					}, 5000);
 					saveButton.disabled = false;
 				}
 
@@ -916,7 +1090,7 @@ function setComment(key, username, message, stype) {
 
 	let stickerPost = `<img src="mage/${stype}.png" height="75px">`;
 
-	if(!(stype === "")){
+	if (!(stype === "")) {
 		message = stickerPost;
 	}
 

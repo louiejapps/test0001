@@ -741,6 +741,35 @@ function reactModal(clickX, clickY, childData) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function menuModal(clickX, clickY, childData) {
 	event.preventDefault();
 	/*database.ref('quotes/' + childData.key).update({
@@ -901,7 +930,30 @@ function menuModal(clickX, clickY, childData) {
 
 }
 
-function thoughtModal() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function thoughtModal(mythought) {
 	sessionStorage.setItem("link", "?");
 	sessionStorage.setItem("base64", "");
 	rnum = "";
@@ -909,15 +961,15 @@ function thoughtModal() {
 	upflag = false;
 	var modal = document.createElement('div');
 
-	let myAuthor = "<big><b style='color:#ed4c2b;'>" + "Thoughts" + "</b></big>";
+	let myAuthor = "<big><b style='color:#ed4c2b;'>" + "My Thoughts" + "</b></big>";
 	let imgButton = "<input type='file' id='img-button' onchange='handleImage()' accept='image/*'>";
 	let postButton = "<button class='view-button' id='post-button'>POST</button>";
 	let htmlString = `
 	
-			<textarea id='caption' name='caption' maxlength='320' placeholder='Write something...'></textarea>
+			<textarea id='caption' style="min-height:80px" name='caption' maxlength='32' placeholder='Write something...'></textarea>
 			`;
 	modal.innerHTML = "<center><div><p>" + myAuthor + "" +
-		"</div></div>" + imgButton + htmlString + postButton + "<a class='remove-button'>Remove</a><div class='close-button'></div>";
+		"</div></div>" + imgButton + htmlString + postButton + "<a class='remove-button' style='color:lightgray'>Delete Thought</a><div class='close-button'></div>";
 
 	modal.style.position = 'fixed';
 	modal.style.top = '36%';
@@ -944,6 +996,28 @@ function thoughtModal() {
 	}
 
 	var captionArea = modal.querySelector('#caption');
+
+	if(mythought !== ""){
+		captionArea.disabled = true;
+		captionArea.textContent = `"${mythought}"`;
+		captionArea.style.border = `none`;
+		captionArea.style.textAlign = `center`;
+		captionArea.style.paddingTop = '30px';
+	}
+
+	var remButton = modal.querySelector('.remove-button');
+	remButton.style.color = '#ccc';
+	remButton.style.cursor = 'pointer';
+
+	remButton.addEventListener('click', function () {
+		if (captionArea.value !== "") {
+			var quoteRef = database.ref(`users/Admin/thoughts`);
+			quoteRef.set("");
+			modal.remove();
+			overlay.remove();
+		}
+	});
+	
 
 
 	var closeButton = modal.querySelector('.close-button');
@@ -1000,25 +1074,11 @@ function thoughtModal() {
 	//POSTBUTTON
 
 	posButton.addEventListener('click', function () {
-
-		let bkg = "";
-
-		if (rnum === "") {
-			bkg = "";
-		} else {
-			bkg = gradients[rnum];
-		}
-
-		if (sessionStorage.getItem("link") === "?") {
-			if (saveData("?", user, "?", Textarea.value, bkg)) {
-				modal.remove();
-				overlay.remove();
-			}
-		} else {
-			if (saveData(sessionStorage.getItem("link"), user, sessionStorage.getItem("base64"), Textarea.value, null)) {
-				modal.remove();
-				overlay.remove();
-			}
+		if (captionArea.value !== "") {
+			var quoteRef = database.ref(`users/Admin/thoughts`);
+			quoteRef.set(captionArea.value);
+			modal.remove();
+			overlay.remove();
 		}
 	});
 

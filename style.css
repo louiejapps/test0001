@@ -48,7 +48,7 @@ body {
 
 /* Style the footer section with a specific background color, padding, color, max width, margin, height, and clear */
 #footer {
-    background-color: #3c424c;
+    background-color: rgb(68, 55, 5);
     padding: 10px;
     color: #6d1c19;
     max-width: 600px;
@@ -84,15 +84,16 @@ input[type="button"] {
     font-weight: bold;
 }
 
+
 /* Style an element with an ID of "column1" with a specific max width, color, margin, background color, padding, height, and border */
-#column1 {
+#column1, #column0 {
     max-width: 600px;
     color: #6d1c19;
     margin: 0 auto;
-    background-color: rgba(253, 206, 220, 0.5);
+    background-color: rgba(212, 173, 24, 0.15);
     padding: 10px;
     height: auto;
-    border-bottom: solid 5px #de3c35;
+    border-bottom: solid 3px #d4ad18;
 }
 
 /* Style an element with  an ID of "postLink" with a specific max width, color, margin, background color, padding, height, and border */
@@ -239,7 +240,7 @@ pre {
 /* Set a style for all buttons */
 button {
 
-    background-color: #e54630;
+    background-color: #d4ad18;
     color: white;
     padding: 14px 20px;
     margin: 0px 0;
@@ -549,7 +550,6 @@ body, html {
     font-family: sans-serif;
     font-size: 0.9em;
     
-    background-image: url('bkgg.webp');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -1234,7 +1234,7 @@ body {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #007bff;
+    background-color: #d4ad18;
     color: #fff;
     border: none;
     border-radius: 50%;
@@ -1243,6 +1243,7 @@ body {
     cursor: pointer;
     width: 50px;
     height: 50px;
+    opacity: 1;
 }
 
 .chat-container {
@@ -1320,8 +1321,8 @@ body {
   .chat-icon-container {
     position: relative;
     display: inline-block; /* Make items display in a row */
-    margin-left: 8px; /* Optional: Add margin between icons */
-    margin-right: 8px; /* Optional: Add margin between icons */
+    margin-left: 14px; /* Optional: Add margin between icons */
+    margin-right: 2px; /* Optional: Add margin between icons */
     white-space: normal; /* Reset white-space for item content */
   }
   
