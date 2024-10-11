@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRMats Attendance</title>
+    <style>
+        /* Reset some basic styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 900px; /* Set your desired width */
+            border-collapse: collapse;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center; /* Center align by default */
+        }
+
+        th {
+            background-color: #3b5998;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        td {
+            font-size: 1rem;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <table id="enrolleesTable">
+            <thead>
+                <tr>
+                    <th colspan="5" style="background-color: #f9f9f9; color: #3b5998; font-size: 2em;" class="table-title">
+                        QRMats<br>
+                        <small style="color: #6d86bb; font-size: 0.8em;">Class Attendance</small>
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 40%;text-align: left;padding-left: 40px;">Full Name</th>  <!-- Wider column for Full Name -->
+                    <th style="width: 20%;">Course</th>
+                    <th style="width: 5%;">Year</th>
+                    <th style="width: 20%;">Student ID</th>
+                    <th style="width: 1%;">Attendance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-database.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyABbM21Aiy_UO86ZLomukM9LLUwRoPCzdg",
+            authDomain: "brgyhall-84c3e.firebaseapp.com",
+            databaseURL: "https://brgyhall-84c3e.firebaseio.com",
+            projectId: "brgyhall-84c3e",
+            storageBucket: "brgyhall-84c3e.appspot.com",
+            messagingSenderId: "703522383994",
+            appId: "1:703522383994:web:2e008786c1d13c8fd5b3c3"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Reference to the 'enrollees' node in Firebase
+        const enrolleesRef = firebase.database().ref('management/enrollees');
+
+        // Function to create a table row with enrollee data
+        function createTableRow(enrollee, attendanceCount) {
+            const tbody = document.querySelector("#enrolleesTable tbody");
+            const row = document.createElement("tr");
+
+            // Format Full Name: Last Name, First Name MI.
+            const fullName = `${enrollee.aLname}, ${enrollee.aFname} ${enrollee.aMname ? enrollee.aMname[0] + '.' : ''}`;
+
+            row.innerHTML = `
+                <td style="text-align: left; padding-left: 40px;">${fullName}</td>
+                <td>${enrollee.aCourse}</td>
+                <td>${enrollee.aYear}</td>
+                <td>${enrollee.aStud_ID}</td>
+                <td>${attendanceCount}</td>
+            `;
+
+            tbody.appendChild(row);
+        }
+
+        // Fetch data from Firebase
+        enrolleesRef.on('value', (snapshot) => {
+            const enrollees = snapshot.val();
+            const tbody = document.querySelector("#enrolleesTable tbody");
+            tbody.innerHTML = '';  // Clear the table before updating
+
+            for (let enrolleeKey in enrollees) {
+                const enrollee = enrollees[enrolleeKey];
+                
+                // Calculate attendance count
+                const attendanceData = enrollee.attendance;
+                let attendanceCount = 0;
+
+                if (attendanceData) {
+                    attendanceCount = Object.values(attendanceData).filter(Boolean).length;
+                }
+
+                // Create a table row for the enrollee
+                createTableRow(enrollee, attendanceCount);
+            }
+        });
+    </script>
+
+</body>
+</html>
